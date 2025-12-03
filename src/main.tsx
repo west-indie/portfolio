@@ -1,3 +1,4 @@
+import "./polyfills/buffer"; // must come before other imports that rely on Buffer
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
