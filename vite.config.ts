@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 // TODO: Update base to match the repository name when deploying to GitHub Pages.
 export default defineConfig({
-  base: '/REPO_NAME/',
+  base: '/portfolio/',
   plugins: [react()],
   test: {
     globals: true,
