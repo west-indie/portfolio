@@ -26,7 +26,7 @@ links:
   github: "https://github.com/example/signal-weaver"
   liveDemo: "https://example.com/signal-weaver"
 media:
-  heroImage: "/images/projects/signal-weaver.jpg"
+  heroImage: "/images/projects/test.png"
   gallery:
     - type: "image"
       src: "/images/projects/signal-weaver-console.jpg"
