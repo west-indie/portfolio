@@ -10,10 +10,12 @@ const heroItems = [
 ];
 
 const focusChips = [
-  'Code / Tools',
+  'Music & Composition',
+  'Sound Design & Audio Engineering',
   'Technical Direction',
   'Lighting & Production',
   'Interactive Media'
+  'Code / Tools',
 ];
 
 export default function Home() {
