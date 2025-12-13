@@ -14,8 +14,8 @@ const focusChips = [
   'Sound Design & Audio Engineering',
   'Technical Direction',
   'Lighting & Production',
-  'Interactive Media'
-  'Code / Tools',
+  'Interactive Media',
+  'Code / Tools'
 ];
 
 export default function Home() {
