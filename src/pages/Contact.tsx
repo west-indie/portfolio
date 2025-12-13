@@ -48,8 +48,8 @@ export default function Contact() {
           touring contexts.
         </p>
         <div className="space-y-2 text-gray-300">
-          <a href="mailto:leo@example.com" className="block underline">
-            leo@example.com
+          <a href="mailto:newultravioletsound@gmail.com" className="block underline">
+            newultravioletsound@gmail.com
           </a>
           <a href="https://github.com/" className="block underline">
             GitHub
