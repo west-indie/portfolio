@@ -1,28 +1,28 @@
 ---
-slug: "luminous-fugue"
-title: "Luminous Fugue"
-year: "2023"
+slug: "2024-New-Plays"
+title: "2024 Mesa College New Plays Festival"
+year: "2024"
 disciplines:
   - theatre
   - lighting-production
-role: "Technical Director"
-client: "Electric Bloom Theatre"
-location: "Chicago"
-shortDescription: "A kinetic play that merges custom LED architecture with live performers inside a shifting cube."
+role: "Lighting Designer"
+client: "Mesa College Theater Company"
+location: "San Diego, California"
+shortDescription: "A collection of original one act plays and monologues written and adapted by Mesa College Students."
 tags:
   - ETC Eos
-  - QLab
+  - DMX
   - Show Control
 featured: true
 techStack:
   - ETC Eos
-  - QLab
+  - DMX
   - Notch
 collaborators:
-  - name: "Aria Chen"
-    role: "Director"
-  - name: "Marcus Lee"
-    role: "Lighting Designer"
+  - name: "George Ye"
+    role: "Producer"
+  - name: "Lizz Benson"
+    role: "Stage Manager"
 links:
   press:
     - "https://example.com/press/luminous-review"
@@ -36,5 +36,4 @@ media:
       src: "/video/projects/luminous-fugue-trailer.mp4"
       caption: "Show trailer."
 ---
-
-I oversaw all technical systems for *Luminous Fugue*, ensuring nightly reliability for a 360° LED cube that moved during each performance. Collaborated with automation, built redundancy for signal paths, and authored show control that let stage managers call looks with confidence.
+I oversaw all lighting systems for *The 2024 Mesa College New Play Festival*, ensuring a enticing visual experience during each performance. Collaborated with multiple creatives to express their distinct vision, authored show control to let the stage manager call looks with confidence, and built environments that allowed the actors to play and find their light.
