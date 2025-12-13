@@ -10,7 +10,7 @@ const navItems = [
 ];
 
 const socialLinks = [
-  { href: 'mailto:leo@example.com', label: 'Email', icon: <FaEnvelope /> },
+  { href: 'mailto:newultravioletsound@gmail.com', label: 'Email', icon: <FaEnvelope /> },
   { href: 'https://github.com/', label: 'GitHub', icon: <FaGithub /> },
   { href: 'https://linkedin.com/', label: 'LinkedIn', icon: <FaLinkedin /> },
   { href: 'https://instagram.com/', label: 'Instagram', icon: <FaInstagram /> }
