@@ -33,4 +33,4 @@ media:
       caption: "Realtime shader pass overlay."
 ---
 
-*When The Noise Stops* is an experimental drama short film that blends themes of suspense and coming of age to convey its message about mental health. Recorded on a shoe-string budget, I composed and arranged the score and sound design that accents each scene; the result is a immersive soundscape that brings out the ethereal natures of the project as a whole.
+*When The Noise Stops* is an experimental drama short film that blends themes of suspense and coming of age to convey its message about mental health. Recorded on a shoe-string budget, I composed and arranged the score and sound design that accents each scene; the result is a immersive soundscape that brings out the ethereal nature of the project as a whole.
