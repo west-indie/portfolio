@@ -9,16 +9,18 @@ export const disciplineLabels: Record<string, string> = {
   'short-film': 'Short Film',
   'sound-design': 'Sound Design',
   'live-electronics': 'Live Electronics',
-  'interactive-media': 'Interactive Media'
+  'interactive-media': 'Interactive Media',
+  'music-comp': 'Music Composition'
 };
 
 export const disciplinesOrdered = [
   'all',
-  'code-programs',
-  'theatre',
-  'lighting-production',
-  'short-film',
+  'music-comp',
   'sound-design',
   'live-electronics',
-  'interactive-media'
+  'short-film',
+  'lighting-production',
+  'interactive-media',
+  'theatre',
+  'code-programs'
 ];
