@@ -6,7 +6,7 @@ disciplines:
   - music-comp
   - short-film
   - sound-design
-role: "Composer and Lead Sound Design"
+role: "Composer and Sound Design"
 client: "Independent"
 location: "San Diego, California"
 shortDescription: "Score and soundtrack to match the ethereal nature of a short film that deals with mental health."
@@ -20,7 +20,7 @@ techStack:
   - GLSL
   - Reaper
 collaborators:
-  - name: "Nia Brooks"
+  - name: "Emilio Rinaldoni"
     role: "Director"
 links:
   press:
@@ -33,4 +33,4 @@ media:
       caption: "Realtime shader pass overlay."
 ---
 
-Shot on a shoestring budget, *Midnight Static* experiments with generative overlays tied to Foley input. I built a compact sensor rig to capture tactile noises and drive shader parameters; the result let us improvise visual motifs in camera rather than in post.
+*When The Noise Stops* is an experimental drama short film that blends themes of suspense and coming of age to convey its message about mental health. Recorded on a shoe-string budget, I composed and arranged the score and sound design that accents each scene; the result is a immersive soundscape that brings out the ethereal natures of the project as a whole.
