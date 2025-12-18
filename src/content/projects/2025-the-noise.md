@@ -1,14 +1,15 @@
 ---
-slug: "midnight-static"
-title: "Midnight Static"
-year: "2022"
+slug: "2025-when-the-noise-stops"
+title: "When The Noise Stops"
+year: "2025"
 disciplines:
+  - music-comp
   - short-film
-  - interactive-media
-role: "Creative Technologist"
+  - sound-design
+role: "Composer and Lead Sound Design"
 client: "Independent"
-location: "Detroit"
-shortDescription: "Short film stitched with real-time shader overlays reacting to on-set Foley."
+location: "San Diego, California"
+shortDescription: "Score and soundtrack to match the ethereal nature of a short film that deals with mental health."
 tags:
   - TouchDesigner
   - GLSL
