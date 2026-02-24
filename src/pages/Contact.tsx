@@ -10,21 +10,107 @@ interface FormState {
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
+const EMAIL_MAX_LENGTH = 254;
+const LOCAL_PART_MAX_LENGTH = 64;
+const DOMAIN_MAX_LENGTH = 253;
+
+const BASIC_EMAIL_FORMAT = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const LOCAL_PART_CHARS = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+const DOMAIN_LABEL_CHARS = /^[A-Za-z0-9-]+$/;
+const ASCII_TLD = /^[A-Za-z]{2,63}$/;
+const PUNYCODE_TLD = /^xn--[A-Za-z0-9-]{2,59}$/;
+
+export const getEmailValidationError = (rawEmail: string): string | null => {
+  const email = rawEmail.trim();
+
+  if (!email) {
+    return 'Please enter an email address.';
+  }
+
+  if (email.length > EMAIL_MAX_LENGTH) {
+    return 'Email address is too long.';
+  }
+
+  if (!BASIC_EMAIL_FORMAT.test(email)) {
+    return 'Please enter a valid email format.';
+  }
+
+  const [localPart, domain] = email.split('@');
+
+  if (!localPart || !domain) {
+    return 'Please enter a valid email format.';
+  }
+
+  if (localPart.length > LOCAL_PART_MAX_LENGTH) {
+    return 'Email address is not valid.';
+  }
+
+  if (!LOCAL_PART_CHARS.test(localPart) || localPart.startsWith('.') || localPart.endsWith('.') || localPart.includes('..')) {
+    return 'Email address is not valid.';
+  }
+
+  if (domain.length > DOMAIN_MAX_LENGTH) {
+    return 'Email domain is too long.';
+  }
+
+  const labels = domain.split('.');
+
+  if (labels.length < 2) {
+    return 'Email must include a domain ending such as .com.';
+  }
+
+  for (const label of labels) {
+    if (!label || label.length > 63) {
+      return 'Email domain is not valid.';
+    }
+
+    if (!DOMAIN_LABEL_CHARS.test(label) || label.startsWith('-') || label.endsWith('-')) {
+      return 'Email domain is not valid.';
+    }
+  }
+
+  const topLevelLabel = labels.at(-1) ?? '';
+  if (!ASCII_TLD.test(topLevelLabel) && !PUNYCODE_TLD.test(topLevelLabel)) {
+    return 'Email must end with a valid domain suffix.';
+  }
+
+  return null;
+};
+
 export default function Contact() {
   const [form, setForm] = useState<FormState>({ name: '', email: '', reason: '', message: '' });
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const emailValidationError = getEmailValidationError(form.email);
+    if (emailValidationError) {
+      setEmailError(emailValidationError);
+      setStatus('idle');
+      setError(null);
+      return;
+    }
+
     setStatus('submitting');
     setError(null);
+    setEmailError(null);
+
+    const payload = {
+      ...form,
+      name: form.name.trim(),
+      email: form.email.trim(),
+      reason: form.reason.trim(),
+      message: form.message.trim()
+    };
 
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) {
@@ -81,9 +167,27 @@ export default function Contact() {
                 required
                 type="email"
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => {
+                  const nextEmail = e.target.value;
+                  setForm({ ...form, email: nextEmail });
+
+                  if (emailError) {
+                    setEmailError(getEmailValidationError(nextEmail));
+                  }
+                }}
+                onBlur={(e) => setEmailError(getEmailValidationError(e.target.value))}
+                autoComplete="email"
+                inputMode="email"
+                maxLength={EMAIL_MAX_LENGTH}
+                aria-invalid={emailError ? 'true' : undefined}
+                aria-describedby={emailError ? 'contact-email-error' : undefined}
                 className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 focus:outline-none focus:border-accent"
               />
+              {emailError && (
+                <span id="contact-email-error" className="block text-xs text-red-400">
+                  {emailError}
+                </span>
+              )}
             </label>
           </div>
           <label className="space-y-2 text-sm block">
