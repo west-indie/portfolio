@@ -11,13 +11,7 @@ const navItems = [
 
 const socialLinks = [
   { href: 'mailto:newultravioletsound@gmail.com', label: 'Email', icon: <FaEnvelope /> },
-<<<<<<< HEAD
   { href: 'https://github.com/west-indie', label: 'GitHub', icon: <FaGithub /> }
-=======
-  { href: 'https://github.com/', label: 'GitHub', icon: <FaGithub /> },
-  { href: 'https://linkedin.com/', label: 'LinkedIn', icon: <FaLinkedin /> },
-  { href: 'https://instagram.com/', label: 'Instagram', icon: <FaInstagram /> }
->>>>>>> 79f132b2b21e09cc65f7cc4e846343aff0b8ce30
 ];
 
 function navClass(isActive: boolean) {
