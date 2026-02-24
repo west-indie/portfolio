@@ -4,9 +4,11 @@ export default function About() {
   return (
     <div className="grid lg:grid-cols-3 gap-10 items-start">
       <div className="space-y-4">
-        <div className="aspect-square rounded-2xl bg-gradient-to-br from-accent/40 via-black to-indigo-900/40 border border-white/10 flex items-center justify-center text-3xl font-semibold">
-          Headshot
-        </div>
+        <img
+          src="/images/leo_headshot.png"
+          alt="Headshot of Leo Nunez"
+          className="aspect-square w-full rounded-2xl object-cover border border-white/10"
+        />
         <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
           <p className="font-semibold">Leo Nunez</p>
           <p className="text-sm text-gray-400">Technical Director & Creative Coder</p>
@@ -34,9 +36,9 @@ export default function About() {
         </div>
         <div className="flex gap-4">
           <a
-            href="/cv.pdf"
+            href="/docs/cv.pdf"
             className="px-5 py-3 rounded-lg bg-accent text-foreground font-semibold shadow-glow"
-            download
+            download="Leo_Nunez_CV.pdf"
           >
             Download CV
           </a>
@@ -44,7 +46,7 @@ export default function About() {
             Contact
           </Link>
         </div>
-        <p className="text-xs text-gray-500">Note: Replace with real cv.pdf in public/</p>
+        <p className="text-xs text-gray-500">Note: Replace with final CV file in public/docs/cv.pdf when ready.</p>
       </div>
     </div>
   );
