@@ -1,5 +1,5 @@
 export const SITE_TITLE = 'Leo Nunez';
-export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/REPLACE_ME';
+export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqjkrde';
 
 export const disciplineLabels: Record<string, string> = {
   all: 'All',

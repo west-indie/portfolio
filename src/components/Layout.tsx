@@ -11,9 +11,13 @@ const navItems = [
 
 const socialLinks = [
   { href: 'mailto:newultravioletsound@gmail.com', label: 'Email', icon: <FaEnvelope /> },
+<<<<<<< HEAD
+  { href: 'https://github.com/west-indie', label: 'GitHub', icon: <FaGithub /> }
+=======
   { href: 'https://github.com/', label: 'GitHub', icon: <FaGithub /> },
   { href: 'https://linkedin.com/', label: 'LinkedIn', icon: <FaLinkedin /> },
   { href: 'https://instagram.com/', label: 'Instagram', icon: <FaInstagram /> }
+>>>>>>> 79f132b2b21e09cc65f7cc4e846343aff0b8ce30
 ];
 
 function navClass(isActive: boolean) {
@@ -45,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-white/5 bg-black/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} {SITE_TITLE}. Built for bold, hybrid work.
+            © {new Date().getFullYear()} {SITE_TITLE}.
           </p>
           <div className="flex items-center space-x-4 text-gray-400">
             {socialLinks.map((link) => (
