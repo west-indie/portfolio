@@ -2,10 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=./" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Redirecting…</title>
+    <script>
+      (function () {
+        var configuredBase = '/portfolio';
+        var locationRef = window.location;
+        var isConfiguredBasePath =
+          locationRef.pathname === configuredBase ||
+          locationRef.pathname.indexOf(configuredBase + '/') === 0;
+        var basePath = isConfiguredBasePath ? configuredBase : '';
+        var routePath = basePath ? locationRef.pathname.slice(basePath.length) : locationRef.pathname;
+        var encodedRoutePath = routePath.replace(/&/g, '~and~');
+        var encodedSearch = locationRef.search ? '&' + locationRef.search.slice(1).replace(/&/g, '~and~') : '';
+        var target = basePath + '/?' + encodedRoutePath + encodedSearch + locationRef.hash;
+
+        locationRef.replace(target);
+      })();
+    </script>
   </head>
   <body>
-    <p>Redirecting…</p>
+    <p>Redirecting...</p>
   </body>
 </html>
