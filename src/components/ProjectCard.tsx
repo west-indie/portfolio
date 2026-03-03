@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ProjectCard({ project }: Props) {
-  const { slug, title, role, year, disciplines, shortDescription, media } = project;
+  const { slug, title, subtitle, role, year, disciplines, media } = project;
   const image = media?.heroImage;
 
   return (
@@ -31,7 +31,7 @@ export default function ProjectCard({ project }: Props) {
             <h3 className="text-lg font-semibold">{title}</h3>
             <span className="text-sm text-gray-400">{year}</span>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed">{shortDescription}</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{subtitle}</p>
           <div className="flex flex-wrap gap-2">
             <span className="px-2 py-1 text-xs rounded-full bg-white/10 text-foreground">{role}</span>
             {disciplines.map((d) => (

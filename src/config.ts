@@ -3,6 +3,8 @@ export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqjkrde';
 
 export const disciplineLabels: Record<string, string> = {
   all: 'All',
+  composition: 'Composition',
+  performance: 'Performance',
   'code-programs': 'Code Programs',
   theatre: 'Theatre',
   'lighting-production': 'Lighting & Production',
@@ -15,6 +17,8 @@ export const disciplineLabels: Record<string, string> = {
 
 export const disciplinesOrdered = [
   'all',
+  'composition',
+  'performance',
   'music-comp',
   'sound-design',
   'live-electronics',

@@ -8,6 +8,26 @@ GitHub repo: **https://github.com/west-indie/portfolio**
 
 ---
 
+## Work CLI (Ink TUI)
+
+This repo includes an Ink-powered CLI for work entry creation, validation, and deploy:
+
+```bash
+npm run work
+npm run work -- create --from ./work-entry.json --dry-run
+npm run work -- validate --changed
+npm run work -- deploy --dry-run
+```
+
+Key commands:
+
+- `work` launches the TTY dashboard (`Create`, `Validate`, `Deploy`, `Quit`).
+- `work create` supports interactive wizard mode (TTY) or `--from <json-file>` (non-TTY).
+- `work validate` defaults to `--changed`; use `--all` for full catalog checks.
+- `work deploy` runs preflight (`validate`, `lint`, `test`, `build`), then commits scoped work/media changes and pushes the current branch.
+
+---
+
 ## 0. Super-short student cheatsheet (Web Editor version)
 
 If all you want to do is **add or update works** and **redeploy**, follow this:
@@ -17,7 +37,7 @@ If all you want to do is **add or update works** and **redeploy**, follow this:
    - Click **“Add file → Create new file”**.
    - Name it something like `my-project-slug.md`.
    - Paste in a copy of an existing project file and edit:
-     - `slug`, `title`, `year`, `disciplines`, `role`, `shortDescription`, media paths, etc.
+     - `slug`, `title`, `subtitle`, `year`, `disciplines`, `role`, media paths, etc.
    - Scroll down, write a commit message (e.g. `Add new project`), click **“Commit changes”**.
 3. To **edit an existing work**:
    - Click the `.md` file.
@@ -130,7 +150,7 @@ disciplines:
 role: "Technical Director"
 client: "Optional Client or Institution"
 location: "City / Venue (optional)"
-shortDescription: "1–2 sentence blurb for cards."
+subtitle: "1–2 sentence blurb for cards."
 tags:
   - "Max/MSP"
   - "QLab"
@@ -185,7 +205,8 @@ To show up nicely on cards and the project page, you should always include:
   * `live-electronics`
   * `interactive-media`
 * `role`: e.g. `"Technical Director"`, `"Programmer"`, `"Lighting Designer"`.
-* `shortDescription`: 1–2 sentences; appears on the Work page cards and Featured section.
+* `subtitle`: 1–2 sentences; appears on the Work page cards and project detail header.
+* `shortDescription`: legacy fallback field for older entries.
 
 #### Useful optional fields
 
@@ -232,7 +253,7 @@ The Markdown body (everything after the `---` frontmatter) is used as the main d
 
 6. Edit:
 
-   * `slug`, `title`, `year`, `disciplines`, `role`, `shortDescription`.
+   * `slug`, `title`, `subtitle`, `year`, `disciplines`, `role`.
    * `media.heroImage` and `media.gallery` references for images and video (see Section 4).
    * Markdown body text at the bottom.
 

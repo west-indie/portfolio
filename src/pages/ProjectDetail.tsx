@@ -46,6 +46,7 @@ export default function ProjectDetail() {
       <header className="space-y-3">
         <p className="text-sm text-gray-400">{project.year}</p>
         <h1 className="text-3xl font-semibold">{project.title}</h1>
+        <p className="text-gray-300">{project.subtitle}</p>
         <p className="text-gray-300">
           {project.role} • {project.disciplines.map((d) => disciplineLabels[d] ?? d).join(' • ')}
         </p>

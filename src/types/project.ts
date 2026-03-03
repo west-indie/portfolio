@@ -20,6 +20,7 @@ export interface Collaborator {
 export interface Project {
   slug: string;
   title: string;
+  subtitle: string;
   year: string;
   disciplines: string[];
   role: string;
