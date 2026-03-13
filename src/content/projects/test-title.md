@@ -1,23 +1,42 @@
 ---
 slug: test-title
-title: TEST TITLE
+title: TEST TITLEe
 subtitle: TEST SUBTITLE!
 year: '2026'
+month: '01'
+category: performance
+tags:
+  - Codex
+  - MAXMSP
+categoryMeta:
+  venue: calarts
+entryLines:
+  - 'Venue: calarts'
 role: 'composer, performer'
 location: calarts
 disciplines:
-  - composition
   - performance
+omitTechStack: false
+omitLinkStack: false
+hidden: false
+hideFromWorkPage: true
 techStack:
   - Codex
   - MAXMSP
 collaborators:
   - name: my friends!
 links:
-  press:
-    - 'https://example.com'
+  stack:
+    - title: Press
+      url: 'https://example.com'
 media:
-  heroImage: 'https://robohash.org/asdfjhasdfhdf.png'
   gallery: []
+  heroImage: 'https://robohash.org/asdfjhasdfhdf.png'
+  omitFeaturedFromGallery: false
+shortDescription: TEST SUBTITLE!
+moreWork:
+  - signal-weaver
+  - 2024-new-plays
+  - 2025-when-the-noise-stops
 ---
 this is my description.

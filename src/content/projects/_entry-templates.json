@@ -1,0 +1,82 @@
+{
+  "categories": [
+    {
+      "id": "feature-film",
+      "label": "Feature Film",
+      "detailFields": [
+        {
+          "key": "duration",
+          "label": "Duration",
+          "required": false
+        },
+        {
+          "key": "festivalstatus",
+          "label": "Festival Status",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "general",
+      "label": "General",
+      "detailFields": []
+    },
+    {
+      "id": "installation",
+      "label": "Installation",
+      "detailFields": []
+    },
+    {
+      "id": "interactive",
+      "label": "Interactive Media",
+      "detailFields": []
+    },
+    {
+      "id": "performance",
+      "label": "Performance",
+      "detailFields": [
+        {
+          "key": "venue",
+          "label": "Venue",
+          "required": false
+        },
+        {
+          "key": "rundates",
+          "label": "Run Dates",
+          "required": false
+        },
+        {
+          "key": "productiontype",
+          "label": "Production Type",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "program",
+      "label": "Program",
+      "detailFields": []
+    },
+    {
+      "id": "short-film",
+      "label": "Short Film",
+      "detailFields": [
+        {
+          "key": "duration",
+          "label": "Duration",
+          "required": false
+        },
+        {
+          "key": "festivalstatus",
+          "label": "Festival Status",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "tooling",
+      "label": "Tooling / Systems",
+      "detailFields": []
+    }
+  ]
+}
