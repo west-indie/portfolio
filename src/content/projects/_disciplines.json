@@ -1,0 +1,68 @@
+{
+  "disciplines": [
+    {
+      "token": "comp",
+      "label": "Music Composition"
+    },
+    {
+      "token": "short-film",
+      "label": "Short Film"
+    },
+    {
+      "token": "theatre",
+      "label": "Theatre"
+    },
+    {
+      "token": "performance",
+      "label": "Performance"
+    },
+    {
+      "token": "sound",
+      "label": "Sound Design"
+    },
+    {
+      "token": "lighting",
+      "label": "Lighting Design"
+    },
+    {
+      "token": "design-production",
+      "label": "Design & Production"
+    },
+    {
+      "token": "interactive-media",
+      "label": "Interactive Media"
+    },
+    {
+      "token": "live-electronics",
+      "label": "Live Electronics"
+    },
+    {
+      "token": "code-programs",
+      "label": "Code Programs"
+    },
+    {
+      "token": "automation-tools",
+      "label": "Automation Tools"
+    },
+    {
+      "token": "batch-processing",
+      "label": "Batch Processing"
+    },
+    {
+      "token": "board-operator",
+      "label": "Board Operator"
+    },
+    {
+      "token": "creative-coding",
+      "label": "Creative Coding"
+    },
+    {
+      "token": "electronic-instrument-design",
+      "label": "Electronic Instrument Design"
+    },
+    {
+      "token": "media-pipeline",
+      "label": "Media Pipeline"
+    }
+  ]
+}

@@ -1,8 +1,24 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { DISCIPLINES, isHttpUrl, isYearValid } from './schema.mjs';
+import {
+  CATEGORY_DEFINITIONS,
+  DEFAULT_CATEGORY,
+  DISCIPLINES,
+  getCategoryDefinition,
+  isHttpUrl,
+  isLocationRequired,
+  isMonthValid,
+  isKnownCategory,
+  isYearValid,
+  MAX_DISCIPLINES,
+  normalizeCategoryMeta,
+  normalizeTag,
+  normalizeTagList,
+  requiredCategoryKeys,
+} from './schema.mjs';
 import { readAllProjects, toRepoRelative } from './store.mjs';
 import { changedPathsFromPorcelain, isGitRepository, runGit } from './git.mjs';
+import { loadRegisteredTags } from './tags.mjs';
 
 const LARGE_MEDIA_WARNING_BYTES = 10 * 1024 * 1024;
 
@@ -18,6 +34,31 @@ function issue(severity, code, message, filePath = null, meta = {}) {
 
 function normalizePath(target) {
   return String(target || '').split(path.sep).join('/');
+}
+
+const WORK_PAGE_SETTINGS_PATH = path.join('src', 'content', 'projects', '_work-page-settings.json');
+
+function normalizeValidationIgnorePath(value) {
+  const raw = normalizePath(String(value || '').trim()).replace(/^\.\//, '');
+  if (!raw) return '';
+  if (raw.startsWith('src/content/projects/') && raw.endsWith('.md')) return raw;
+  if (!raw.includes('/') && raw.endsWith('.md')) return 'src/content/projects/' + raw;
+  return '';
+}
+
+async function getValidationIgnoredFiles(root) {
+  const settingsPath = path.resolve(root, WORK_PAGE_SETTINGS_PATH);
+  try {
+    const raw = await fs.readFile(settingsPath, 'utf8');
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed?.validationIgnoreFiles) ? parsed.validationIgnoreFiles : [];
+    const normalized = list
+      .map((item) => normalizeValidationIgnorePath(item))
+      .filter(Boolean);
+    return new Set(normalized);
+  } catch {
+    return new Set();
+  }
 }
 
 async function getChangedProjectFiles(root) {
@@ -36,12 +77,38 @@ function getLocalMediaReferences(data) {
   const refs = [];
   const hero = String(data?.media?.heroImage || '').trim();
   if (hero) refs.push(hero);
-  const gallery = Array.isArray(data?.media?.gallery) ? data.media.gallery : [];
-  for (const item of gallery) {
-    const src = String(item?.src || '').trim();
-    if (src) refs.push(src);
+  const mediaCollections = [
+    Array.isArray(data?.media?.gallery) ? data.media.gallery : [],
+    Array.isArray(data?.media?.featured) ? data.media.featured : [],
+    Array.isArray(data?.media?.placeholders) ? data.media.placeholders : [],
+  ];
+  for (const collection of mediaCollections) {
+    for (const item of collection) {
+      const src = String(item?.src || '').trim();
+      if (src) refs.push(src);
+    }
   }
-  return refs;
+  return Array.from(new Set(refs));
+}
+
+function validateMediaCollection(items, fieldName, filePath, push) {
+  for (let index = 0; index < items.length; index += 1) {
+    const item = items[index];
+    if (!item || typeof item !== 'object') {
+      push(issue('error', 'invalid_media_item', `${fieldName}[${index}] must be an object.`, filePath));
+      continue;
+    }
+
+    const type = String(item.type || '').trim();
+    const src = String(item?.src || '').trim();
+
+    if (!['image', 'video', 'embed'].includes(type)) {
+      push(issue('error', 'invalid_media_type', `${fieldName}[${index}].type must be image|video|embed.`, filePath));
+    }
+    if (!src) {
+      push(issue('error', 'invalid_media_src', `${fieldName}[${index}].src is required.`, filePath));
+    }
+  }
 }
 
 function resolveLocalMediaPath(src, root) {
@@ -63,6 +130,19 @@ async function fileSizeIfExists(filePath) {
   }
 }
 
+function normalizeDiscipline(value) {
+  return normalizeTag(value);
+}
+
+async function resolveAllowedDisciplines(root) {
+  const { tags: registeredTags } = await loadRegisteredTags({ root });
+  const normalized = normalizeTagList([
+    ...DISCIPLINES,
+    ...(Array.isArray(registeredTags) ? registeredTags : []),
+  ]);
+  return new Set(normalized);
+}
+
 function validateLinks(data, filePath, push) {
   const links = data.links || {};
   const direct = [
@@ -74,6 +154,21 @@ function validateLinks(data, filePath, push) {
     if (!isHttpUrl(value)) {
       push(issue('error', 'invalid_url', `${field} must be a valid http(s) URL.`, filePath));
     }
+  }
+
+  if (Array.isArray(links.stack)) {
+    links.stack.forEach((value, index) => {
+      const title = String(value?.title || '').trim();
+      const url = String(value?.url || '').trim();
+      if (!title) {
+        push(issue('error', 'invalid_links_stack', `links.stack[${index}].title is required.`, filePath));
+      }
+      if (!isHttpUrl(url)) {
+        push(issue('error', 'invalid_url', `links.stack[${index}].url must be a valid http(s) URL.`, filePath));
+      }
+    });
+  } else if (links.stack != null) {
+    push(issue('error', 'invalid_links_stack', 'links.stack must be an array.', filePath));
   }
 
   if (Array.isArray(links.press)) {
@@ -91,34 +186,24 @@ function validateMediaShape(data, filePath, push) {
     return;
   }
 
-  const heroImage = String(data.media.heroImage || '').trim();
-  if (!heroImage) {
-    push(issue('error', 'missing_media_hero', 'media.heroImage is required.', filePath));
-  }
-
   if (data.media.gallery != null && !Array.isArray(data.media.gallery)) {
     push(issue('error', 'invalid_media_gallery', 'media.gallery must be an array.', filePath));
     return;
   }
-
   const gallery = Array.isArray(data.media.gallery) ? data.media.gallery : [];
-  for (let index = 0; index < gallery.length; index += 1) {
-    const item = gallery[index];
-    if (!item || typeof item !== 'object') {
-      push(issue('error', 'invalid_media_item', `media.gallery[${index}] must be an object.`, filePath));
-      continue;
-    }
+  validateMediaCollection(gallery, 'media.gallery', filePath, push);
 
-    const type = String(item.type || '').trim();
-    const src = String(item.src || '').trim();
-
-    if (!['image', 'video', 'embed'].includes(type)) {
-      push(issue('error', 'invalid_media_type', `media.gallery[${index}].type must be image|video|embed.`, filePath));
-    }
-    if (!src) {
-      push(issue('error', 'invalid_media_src', `media.gallery[${index}].src is required.`, filePath));
-    }
+  if (data.media.featured != null && !Array.isArray(data.media.featured)) {
+    push(issue('error', 'invalid_media_featured', 'media.featured must be an array.', filePath));
   }
+  const featured = Array.isArray(data.media.featured) ? data.media.featured : [];
+  validateMediaCollection(featured, 'media.featured', filePath, push);
+
+  if (data.media.placeholders != null && !Array.isArray(data.media.placeholders)) {
+    push(issue('error', 'invalid_media_placeholders', 'media.placeholders must be an array.', filePath));
+  }
+  const placeholders = Array.isArray(data.media.placeholders) ? data.media.placeholders : [];
+  validateMediaCollection(placeholders, 'media.placeholders', filePath, push);
 }
 
 function validateRequiredFields(data, body, filePath, push) {
@@ -127,8 +212,8 @@ function validateRequiredFields(data, body, filePath, push) {
     'title',
     'subtitle',
     'year',
+    'month',
     'role',
-    'location',
   ];
 
   requiredStringFields.forEach((field) => {
@@ -137,8 +222,20 @@ function validateRequiredFields(data, body, filePath, push) {
     }
   });
 
+  const category = String(data?.category || DEFAULT_CATEGORY).trim() || DEFAULT_CATEGORY;
+  if (isLocationRequired(category) && !String(data?.location || '').trim()) {
+    push(issue('error', 'missing_required_field', 'location is required.', filePath));
+  }
+
   if (!Array.isArray(data?.disciplines) || data.disciplines.length < 1) {
     push(issue('error', 'missing_required_field', 'disciplines must include at least one value.', filePath));
+  } else if (data.disciplines.length > MAX_DISCIPLINES) {
+    push(issue(
+      'error',
+      'invalid_disciplines_count',
+      `disciplines may include at most ${MAX_DISCIPLINES} values.`,
+      filePath,
+    ));
   }
 
   if (!String(body || '').trim()) {
@@ -146,17 +243,79 @@ function validateRequiredFields(data, body, filePath, push) {
   }
 }
 
-function validateDomainRules(data, filePath, push) {
+function validateDomainRules(
+  data,
+  filePath,
+  push,
+  categoryDefinitions = null,
+  allowedDisciplines = new Set(),
+) {
   const year = String(data?.year || '').trim();
   if (year && !isYearValid(year)) {
     push(issue('error', 'invalid_year', 'year must be 4 digits between 1900 and 2100.', filePath));
   }
+  const month = String(data?.month || '').trim();
+  if (month && !isMonthValid(month)) {
+    push(issue('error', 'invalid_month', 'month must be between 1 and 12.', filePath));
+  }
+
+  const category = String(data?.category || '').trim();
+  if (category) {
+    if (!isKnownCategory(category, categoryDefinitions || CATEGORY_DEFINITIONS)) {
+      push(issue('error', 'invalid_category', `Unknown category: ${category}`, filePath));
+    } else {
+      const categoryMeta = normalizeCategoryMeta(data?.categoryMeta || {});
+      if (data?.categoryMeta != null && (typeof data.categoryMeta !== 'object' || Array.isArray(data.categoryMeta))) {
+        push(issue('error', 'invalid_category_meta', 'categoryMeta must be an object.', filePath));
+      }
+      const missingRequired = requiredCategoryKeys(category, categoryDefinitions || CATEGORY_DEFINITIONS)
+        .filter((key) => !String(categoryMeta[key] || '').trim());
+      if (missingRequired.length > 0) {
+        const definition = getCategoryDefinition(category, categoryDefinitions || CATEGORY_DEFINITIONS);
+        push(issue(
+          'error',
+          'missing_category_meta',
+          `Missing required categoryMeta field(s) for ${definition.label}: ${missingRequired.join(', ')}`,
+          filePath,
+        ));
+      }
+    }
+  }
+
+  if (data?.entryLines != null) {
+    if (!Array.isArray(data.entryLines)) {
+      push(issue('error', 'invalid_entry_lines', 'entryLines must be an array of strings.', filePath));
+    } else {
+      data.entryLines.forEach((line, index) => {
+        if (!String(line || '').trim()) {
+          push(issue('error', 'invalid_entry_lines', `entryLines[${index}] must be a non-empty string.`, filePath));
+        }
+      });
+    }
+  }
 
   const disciplines = Array.isArray(data?.disciplines) ? data.disciplines : [];
   for (const discipline of disciplines) {
-    if (!DISCIPLINES.includes(String(discipline))) {
+    const normalized = normalizeDiscipline(discipline);
+    if (allowedDisciplines.size > 0 && normalized && !allowedDisciplines.has(normalized)) {
       push(issue('error', 'invalid_discipline', `Unknown discipline: ${discipline}`, filePath));
     }
+  }
+
+  if (data?.omitTechStack != null && typeof data.omitTechStack !== 'boolean') {
+    push(issue('error', 'invalid_omit_tech_stack', 'omitTechStack must be a boolean when provided.', filePath));
+  }
+
+  if (data?.omitLinkStack != null && typeof data.omitLinkStack !== 'boolean') {
+    push(issue('error', 'invalid_omit_link_stack', 'omitLinkStack must be a boolean when provided.', filePath));
+  }
+
+  if (data?.hidden != null && typeof data.hidden !== 'boolean') {
+    push(issue('error', 'invalid_hidden_flag', 'hidden must be a boolean when provided.', filePath));
+  }
+
+  if (data?.hideFromWorkPage != null && typeof data.hideFromWorkPage !== 'boolean') {
+    push(issue('error', 'invalid_hide_from_work_page_flag', 'hideFromWorkPage must be a boolean when provided.', filePath));
   }
 
   validateLinks(data, filePath, push);
@@ -164,6 +323,23 @@ function validateDomainRules(data, filePath, push) {
 }
 
 function collectWarnings(data, filePath, push) {
+  const category = String(data?.category || '').trim();
+  if (!category) {
+    push(issue('warning', 'missing_category', `category is missing. Defaulting to "${DEFAULT_CATEGORY}" is recommended.`, filePath));
+  }
+
+  const tags = Array.isArray(data?.tags) ? data.tags : [];
+  if (data?.tags != null && !Array.isArray(data.tags)) {
+    push(issue('warning', 'invalid_tags_shape', 'tags should be an array of strings.', filePath));
+  } else if (tags.length === 0) {
+    push(issue('warning', 'missing_tags', 'tags is empty. Add searchable tags such as "sound design".', filePath));
+  } else {
+    const normalized = normalizeTagList(tags);
+    if (normalized.length !== tags.length) {
+      push(issue('warning', 'duplicate_tags', 'tags contain duplicates or unnormalized values.', filePath));
+    }
+  }
+
   if (!Array.isArray(data?.techStack) || data.techStack.length === 0) {
     push(issue('warning', 'missing_tech_stack', 'techStack is empty.', filePath));
   }
@@ -180,24 +356,34 @@ function collectWarnings(data, filePath, push) {
   });
 }
 
-export async function validateWorkEntries({ mode = 'changed', root = process.cwd() } = {}) {
+export async function validateWorkEntries({ mode = 'changed', root = process.cwd(), categoryDefinitions = null } = {}) {
   const normalizedMode = mode === 'all' ? 'all' : 'changed';
+  const allowedDisciplines = await resolveAllowedDisciplines(root);
   const { entries, parseErrors } = await readAllProjects(root);
+  const validationIgnoredFiles = await getValidationIgnoredFiles(root);
+  const isValidationIgnored = (filePath) => {
+    const rel = normalizePath(toRepoRelative(root, filePath));
+    return validationIgnoredFiles.has(rel);
+  };
+
+  const eligibleEntries = entries.filter((entry) => !isValidationIgnored(entry.filePath));
+  const eligibleParseErrors = parseErrors.filter((entry) => !isValidationIgnored(entry.filePath));
+
   const changedRelativePaths = normalizedMode === 'changed'
-    ? await getChangedProjectFiles(root)
-    : entries.map((entry) => toRepoRelative(root, entry.filePath));
+    ? (await getChangedProjectFiles(root)).filter((filePath) => !validationIgnoredFiles.has(filePath))
+    : eligibleEntries.map((entry) => normalizePath(toRepoRelative(root, entry.filePath)));
 
   const changedSet = new Set(changedRelativePaths);
 
   const targetEntries = normalizedMode === 'all'
-    ? entries
-    : entries.filter((entry) => changedSet.has(toRepoRelative(root, entry.filePath)));
+    ? eligibleEntries
+    : eligibleEntries.filter((entry) => changedSet.has(normalizePath(toRepoRelative(root, entry.filePath))));
 
   const issues = [];
   const pushIssue = (next) => issues.push(next);
 
-  for (const parseError of parseErrors) {
-    const rel = toRepoRelative(root, parseError.filePath);
+  for (const parseError of eligibleParseErrors) {
+    const rel = normalizePath(toRepoRelative(root, parseError.filePath));
     if (normalizedMode === 'all' || changedSet.has(rel)) {
       pushIssue(issue('error', 'parse_error', `Markdown/frontmatter parse failed: ${parseError.message}`, parseError.filePath));
     }
@@ -205,13 +391,19 @@ export async function validateWorkEntries({ mode = 'changed', root = process.cwd
 
   for (const entry of targetEntries) {
     validateRequiredFields(entry.data, entry.body, entry.filePath, pushIssue);
-    validateDomainRules(entry.data, entry.filePath, pushIssue);
+    validateDomainRules(
+      entry.data,
+      entry.filePath,
+      pushIssue,
+      categoryDefinitions,
+      allowedDisciplines,
+    );
     collectWarnings(entry.data, entry.filePath, pushIssue);
   }
 
   const slugMap = new Map();
   const titleYearMap = new Map();
-  for (const entry of entries) {
+  for (const entry of eligibleEntries) {
     const slug = String(entry.data?.slug || '').trim();
     if (slug) {
       const list = slugMap.get(slug) || [];

@@ -3,6 +3,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const TEST_FILES = [
   'schema.check.mjs',
+  'templates.check.mjs',
   'media.check.mjs',
   'create-from.check.mjs',
   'validate.check.mjs',

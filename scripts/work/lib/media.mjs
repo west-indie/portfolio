@@ -115,7 +115,7 @@ async function materializeSingleMediaPath({
   const ext = extensionFor(source.absolutePath);
   const fileName = slot === 'hero'
     ? `${slug}-hero${ext}`
-    : `${slug}-${index}${ext}`;
+    : (slot === 'featured' ? `${slug}-featured-${index}${ext}` : `${slug}-${index}${ext}`);
 
   const destinationDir = detectedType === 'video'
     ? path.resolve(root, 'public', 'video', 'projects')
@@ -143,16 +143,21 @@ async function materializeSingleMediaPath({
 
 export async function materializeMedia({ slug, media, root = process.cwd(), dryRun = false }) {
   const operations = [];
-  const heroResult = await materializeSingleMediaPath({
-    src: media.heroImage,
-    slug,
-    slot: 'hero',
-    index: 0,
-    root,
-    dryRun,
-    forcedType: 'image',
-  });
-  operations.push(heroResult.operation);
+  const heroSource = String(media?.heroImage || '').trim();
+  const heroResult = heroSource
+    ? await materializeSingleMediaPath({
+      src: heroSource,
+      slug,
+      slot: 'hero',
+      index: 0,
+      root,
+      dryRun,
+      forcedType: 'image',
+    })
+    : null;
+  if (heroResult?.operation) {
+    operations.push(heroResult.operation);
+  }
 
   const gallery = [];
   const galleryItems = Array.isArray(media.gallery) ? media.gallery : [];
@@ -176,10 +181,35 @@ export async function materializeMedia({ slug, media, root = process.cwd(), dryR
     });
   }
 
+  const featured = [];
+  const featuredItems = Array.isArray(media.featured)
+    ? media.featured
+    : (Array.isArray(media.placeholders) ? media.placeholders : []);
+  for (let index = 0; index < featuredItems.length; index += 1) {
+    const item = featuredItems[index];
+    const result = await materializeSingleMediaPath({
+      src: item.src,
+      slug,
+      slot: 'featured',
+      index: index + 1,
+      root,
+      dryRun,
+      forcedType: item.type,
+    });
+    operations.push(result.operation);
+    const caption = String(item.caption || '').trim();
+    featured.push({
+      type: result.type,
+      src: result.src,
+      ...(caption ? { caption } : {}),
+    });
+  }
+
   return {
     media: {
-      heroImage: heroResult.src,
       gallery,
+      ...(heroResult?.src ? { heroImage: heroResult.src } : {}),
+      ...(featured.length > 0 ? { featured } : {}),
     },
     operations,
   };

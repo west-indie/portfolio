@@ -4,12 +4,25 @@ import { disciplineLabels, disciplinesOrdered } from '../config';
 interface Props {
   active: string;
   onChange: (value: string) => void;
+  options?: string[];
+  labels?: Record<string, string>;
+  allLabel?: string;
+  className?: string;
 }
 
-export default function DisciplineFilter({ active, onChange }: Props) {
+export default function DisciplineFilter({
+  active,
+  onChange,
+  options = disciplinesOrdered,
+  labels,
+  allLabel = 'All',
+  className = 'flex flex-wrap gap-3 mb-8',
+}: Props) {
+  const safeOptions = Array.isArray(options) && options.length > 0 ? options : ['all'];
+
   return (
-    <div className="flex flex-wrap gap-3 mb-8">
-      {disciplinesOrdered.map((key) => (
+    <div className={className}>
+      {safeOptions.map((key) => (
         <motion.button
           key={key}
           whileHover={{ scale: 1.03 }}
@@ -21,7 +34,7 @@ export default function DisciplineFilter({ active, onChange }: Props) {
               : 'border-white/10 text-gray-300 hover:border-accent/60'
           }`}
         >
-          {disciplineLabels[key] ?? key}
+          {key === 'all' ? allLabel : (labels?.[key] ?? disciplineLabels[key] ?? key)}
         </motion.button>
       ))}
     </div>

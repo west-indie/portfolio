@@ -10,6 +10,8 @@ function normalizePath(filePath) {
 function isAllowedPath(filePath) {
   const normalized = normalizePath(filePath);
   if (normalized.startsWith('src/content/projects/') && normalized.endsWith('.md')) return true;
+  if (normalized === 'src/content/projects/_tags.json') return true;
+  if (normalized === 'src/content/projects/_entry-templates.json') return true;
   if (normalized.startsWith('public/images/projects/')) return true;
   if (normalized.startsWith('public/video/projects/')) return true;
   return false;
@@ -23,26 +25,62 @@ function runCommand(command, args, { cwd = process.cwd(), dryRun = false, label 
       stdout: '',
       stderr: '',
       status: 0,
+      error: '',
       command: printable,
       skipped: true,
       label: label || printable,
     };
   }
 
-  const result = spawnSync(command, args, {
+  let executedCommand = printable;
+  let result = spawnSync(command, args, {
     cwd,
     encoding: 'utf8',
-    stdio: 'inherit',
+    stdio: 'pipe',
   });
+
+  const normalizedCommand = String(command || '').trim().toLowerCase();
+  const isWindowsNpmCommand = process.platform === 'win32'
+    && (normalizedCommand === 'npm' || normalizedCommand === 'npm.cmd');
+  const shouldRetryWithCmd = isWindowsNpmCommand
+    && result.error
+    && ['EINVAL', 'EPERM', 'ENOENT'].includes(String(result.error.code || '').toUpperCase());
+
+  if (shouldRetryWithCmd) {
+    const fallbackShell = process.env.ComSpec || 'cmd.exe';
+    const fallbackLine = `npm ${args.join(' ')}`;
+    result = spawnSync(fallbackShell, ['/d', '/s', '/c', fallbackLine], {
+      cwd,
+      encoding: 'utf8',
+      stdio: 'pipe',
+    });
+    executedCommand = `${fallbackShell} /d /s /c ${fallbackLine}`;
+  }
+
+  const stdout = String(result.stdout || '');
+  const stderr = String(result.stderr || '');
+  if (stdout) process.stdout.write(stdout);
+  if (stderr) process.stderr.write(stderr);
 
   return {
     ok: result.status === 0,
-    stdout: String(result.stdout || ''),
-    stderr: String(result.stderr || ''),
-    status: result.status,
-    command: printable,
+    stdout,
+    stderr,
+    status: Number.isFinite(result.status) ? result.status : 1,
+    error: result.error ? String(result.error?.message || result.error) : '',
+    command: executedCommand,
     label: label || printable,
   };
+}
+
+function commandFailureMessage(summary, result = {}) {
+  const detail = String(
+    result.error
+    || result.stderr
+    || result.stdout
+    || '',
+  ).trim();
+  return detail ? `${summary}\n${detail}` : summary;
 }
 
 function parseNameStatusLines(stdout) {
@@ -112,6 +150,7 @@ export async function runDeployWorkflow({
   skipTest = false,
   skipBuild = false,
   noPreflight = false,
+  categoryDefinitions = null,
 } = {}) {
   if (!isGitRepository(cwd)) {
     throw new Error('Not inside a git repository.');
@@ -120,28 +159,33 @@ export async function runDeployWorkflow({
   const logs = [];
 
   if (!noPreflight) {
-    const validation = await validateWorkEntries({ mode: 'changed', root: cwd });
+    const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+    const validation = await validateWorkEntries({
+      mode: 'changed',
+      root: cwd,
+      categoryDefinitions,
+    });
     logs.push(`validate: checked=${validation.checkedFiles.length} errors=${validation.errors.length} warnings=${validation.warnings.length}`);
     if (!validation.ok) {
       throw new Error('Deploy blocked: validation failed. Run `work validate --changed` for details.');
     }
 
     if (!skipLint) {
-      const lintResult = runCommand('npm', ['run', 'lint'], { cwd, dryRun, label: 'npm run lint' });
+      const lintResult = runCommand(npmCommand, ['run', 'lint'], { cwd, dryRun, label: 'npm run lint' });
       logs.push(lintResult.label);
-      if (!lintResult.ok) throw new Error('Deploy blocked: lint failed.');
+      if (!lintResult.ok) throw new Error(commandFailureMessage('Deploy blocked: lint failed.', lintResult));
     }
 
     if (!skipTest) {
-      const testResult = runCommand('npm', ['test', '--', '--run'], { cwd, dryRun, label: 'npm test -- --run' });
+      const testResult = runCommand(npmCommand, ['test', '--', '--run'], { cwd, dryRun, label: 'npm test -- --run' });
       logs.push(testResult.label);
-      if (!testResult.ok) throw new Error('Deploy blocked: tests failed.');
+      if (!testResult.ok) throw new Error(commandFailureMessage('Deploy blocked: tests failed.', testResult));
     }
 
     if (!skipBuild) {
-      const buildResult = runCommand('npm', ['run', 'build'], { cwd, dryRun, label: 'npm run build' });
+      const buildResult = runCommand(npmCommand, ['run', 'build'], { cwd, dryRun, label: 'npm run build' });
       logs.push(buildResult.label);
-      if (!buildResult.ok) throw new Error('Deploy blocked: build failed.');
+      if (!buildResult.ok) throw new Error(commandFailureMessage('Deploy blocked: build failed.', buildResult));
     }
   }
 

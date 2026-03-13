@@ -22,6 +22,11 @@ export default async function run() {
       year: '2026',
       title: 'Signal Weaver',
       subtitle: 'Realtime cueing for performance.',
+      category: 'performance',
+      tags: ['sound design', 'music composition'],
+      categoryMeta: {
+        venue: 'Mainstage',
+      },
       role: 'Creative Technologist',
       location: 'San Diego',
       disciplines: ['interactive-media'],
@@ -30,7 +35,7 @@ export default async function run() {
       links: {
         github: 'github.com/example/repo',
         liveDemo: 'example.com/demo',
-        press: ['news.example.com/story'],
+        stack: [{ title: 'Review', url: 'news.example.com/story' }],
       },
       media: {
         heroImage: heroSrc,
@@ -48,7 +53,12 @@ export default async function run() {
   assert.match(written, /title:\s+Signal Weaver/);
   assert.match(written, /github:\s+'?https:\/\/github.com\/example\/repo'?/);
   assert.match(written, /liveDemo:\s+'?https:\/\/example.com\/demo'?/);
-  assert.match(written, /-\s+'?https:\/\/news.example.com\/story'?/);
+  assert.match(written, /stack:/);
+  assert.match(written, /title:\s+Review/);
+  assert.match(written, /url:\s+'?https:\/\/news.example.com\/story'?/);
+  assert.match(written, /category:\s+performance/);
+  assert.match(written, /tags:/);
+  assert.match(written, /entryLines:/);
   assert.match(written, /gallery:/);
   assert.doesNotMatch(written, /caption:\s+undefined/);
 }

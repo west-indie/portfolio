@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { DEFAULT_CATEGORY } from './schema.mjs';
 
 export const PROJECTS_DIR = path.join('src', 'content', 'projects');
 
@@ -63,9 +64,18 @@ function normalizeFrontmatterForWrite(frontmatter) {
     title: frontmatter.title,
     subtitle: frontmatter.subtitle,
     year: frontmatter.year,
+    month: frontmatter.month,
+    category: frontmatter.category || DEFAULT_CATEGORY,
+    tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+    categoryMeta: frontmatter.categoryMeta || {},
+    entryLines: Array.isArray(frontmatter.entryLines) ? frontmatter.entryLines : [],
     role: frontmatter.role,
     location: frontmatter.location,
     disciplines: Array.isArray(frontmatter.disciplines) ? frontmatter.disciplines : [],
+    omitTechStack: frontmatter.omitTechStack === true,
+    omitLinkStack: frontmatter.omitLinkStack === true,
+    hidden: frontmatter.hidden === true,
+    hideFromWorkPage: frontmatter.hideFromWorkPage === true,
     techStack: Array.isArray(frontmatter.techStack) ? frontmatter.techStack : [],
     collaborators: Array.isArray(frontmatter.collaborators) ? frontmatter.collaborators : [],
     links: frontmatter.links || {},

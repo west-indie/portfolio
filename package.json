@@ -8,10 +8,12 @@
   },
   "scripts": {
     "dev": "vite",
+    "sandbox": "vite --host --open",
+    "dev:open": "vite --host --open",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "work": "node scripts/work.mjs",
     "work:validate": "node scripts/work.mjs validate --all",

@@ -33,6 +33,10 @@ export default async function run() {
     title: 'CLI Entry',
     subtitle: 'From CLI test',
     year: '2026',
+    category: 'performance',
+    categoryMeta: {
+      venue: 'CLI Test Venue',
+    },
     role: 'Role',
     location: 'Place',
     disciplines: ['theatre'],

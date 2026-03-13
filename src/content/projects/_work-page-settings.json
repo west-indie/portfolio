@@ -1,0 +1,39 @@
+{
+  "hiddenDisciplineTokens": [
+    "performance",
+    "live-electronics",
+    "automation-tools",
+    "batch-processing",
+    "board-operator",
+    "electronic-instrument-design",
+    "media-pipeline"
+  ],
+  "hiddenProjectGroupTokens": [
+    "film_v1"
+  ],
+  "chipOrder": [
+    "discipline:comp",
+    "group:theatre_v2",
+    "discipline:short-film",
+    "group:codingv1",
+    "discipline:theatre",
+    "discipline:performance",
+    "discipline:sound",
+    "discipline:lighting",
+    "discipline:design-production",
+    "discipline:interactive-media",
+    "discipline:live-electronics",
+    "discipline:code-programs",
+    "discipline:automation-tools",
+    "discipline:batch-processing",
+    "discipline:board-operator",
+    "discipline:creative-coding",
+    "discipline:electronic-instrument-design",
+    "discipline:media-pipeline",
+    "group:film_v1"
+  ],
+  "validationIgnoreFiles": [
+    "src/content/projects/code-tool.md",
+    "src/content/projects/short-film.md"
+  ]
+}

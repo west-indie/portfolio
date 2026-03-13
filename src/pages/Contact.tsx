@@ -130,8 +130,7 @@ export default function Contact() {
       <div className="space-y-4">
         <h1 className="text-3xl font-semibold">Contact</h1>
         <p className="text-gray-300">
-          For collaborations, productions, and technical direction inquiries. I respond quickly to projects in development and
-          touring contexts.
+          For collaborations, productions, and technical direction inquiries. I respond quickly to projects in development and touring contexts.
         </p>
         <div className="space-y-2 text-gray-300">
           <a href="mailto:newultravioletsound@gmail.com" className="block underline">

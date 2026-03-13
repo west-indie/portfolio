@@ -10,12 +10,29 @@ const heroItems = [
 ];
 
 const focusChips = [
+  
+  
+  
+  
+  
+  
+  
+  
+  
   'Music & Composition',
+  'Design & Production',
   'Sound Design & Audio Engineering',
-  'Technical Direction',
-  'Lighting & Production',
-  'Interactive Media',
-  'Code / Tools'
+  'Lighting & Technical Direction',
+  'Programming and Coding Tools',
+
+
+
+
+
+
+
+
+
 ];
 
 export default function Home() {
@@ -34,13 +51,12 @@ export default function Home() {
             >
               {item.id === 'title' && (
                 <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-                  Leo Nunez – Technical Director & Creative Coder
+                  Leo Nunez – Technical Designer &amp; Artist
                 </h1>
               )}
               {item.id === 'subtitle' && (
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  I build tools and lead teams where code, light, and live bodies collide — from adaptive control systems to bold
-                  theatre and film environments.
+                  I design tools and lead teams where code, light, and live bodies collide — from adaptive control systems to bold theatre and film environments.
                 </p>
               )}
               {item.id === 'actions' && (
@@ -71,8 +87,7 @@ export default function Home() {
           <p className="text-sm uppercase tracking-wide text-gray-300 mb-4">Hybrid practice</p>
           <h2 className="text-2xl font-semibold mb-4">Systems thinking meets live performance.</h2>
           <p className="text-gray-300 leading-relaxed">
-            Whether it is designing resilient show networks, prototyping interactive media, or crafting new tools for stage
-            managers, I bridge creative vision with dependable engineering.
+            Whether it is designing resilient show networks, prototyping interactive media, or crafting new tools for stage managers, I bridge creative vision with dependable engineering.
           </p>
         </motion.div>
       </section>
@@ -86,13 +101,13 @@ export default function Home() {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {featured.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+            <ProjectCard key={project.slug} project={project} showTags={false} />
           ))}
         </div>
       </section>
 
       <section>
-        <h3 className="text-xl font-semibold mb-4">What I do</h3>
+        <h3 className="text-xl font-semibold mb-4">Areas of Expertise</h3>
         <div className="flex flex-wrap gap-3">
           {focusChips.map((chip) => (
             <motion.span

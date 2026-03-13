@@ -19,3 +19,101 @@ a {
   background: linear-gradient(#0b0b10, #0b0b10) padding-box,
     linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #f97316 100%) border-box;
 }
+
+@keyframes mwb-preview-highlight {
+  0% {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 0 0 rgba(34, 211, 238, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.5), 0 0 18px rgba(34, 211, 238, 0.35);
+  }
+}
+
+[data-mwb-highlight='true'] {
+  outline: 2px solid rgba(34, 211, 238, 0.9);
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+  animation: mwb-preview-highlight 900ms ease-in-out infinite alternate;
+}
+
+:is([data-project-layout='theatre_v1']) .media-ribbon {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 58, 237, 0.9) rgba(255, 255, 255, 0.12);
+}
+
+:is([data-project-layout='theatre_v1']) .media-ribbon::-webkit-scrollbar {
+  height: 10px;
+}
+
+:is([data-project-layout='theatre_v1']) .media-ribbon::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+:is([data-project-layout='theatre_v1']) .media-ribbon::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.95), rgba(37, 99, 235, 0.9), rgba(249, 115, 22, 0.85));
+}
+
+:is([data-project-layout='theatre_v1']) .media-ribbon::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 1), rgba(59, 130, 246, 0.95), rgba(251, 146, 60, 0.9));
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-shell {
+  position: relative;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker {
+  margin: 0 1rem 0.5rem;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker.is-active {
+  opacity: 1;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-track {
+  position: relative;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-thumb {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.95), rgba(37, 99, 235, 0.9), rgba(249, 115, 22, 0.85));
+  transition: width 120ms ease, left 100ms linear;
+  will-change: width, left;
+}
+
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item {
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color 180ms ease, box-shadow 180ms ease;
+}
+
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:hover,
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:focus-within {
+  outline-color: rgba(124, 58, 237, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.55);
+  z-index: 2;
+}

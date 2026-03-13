@@ -171,6 +171,13 @@ links:
     - "https://press-link-2.example"
 media:
   heroImage: "/images/projects/my-project-hero.jpg"
+  featured:
+    - type: "image"
+      src: "/images/projects/my-project-featured-1.jpg"
+      caption: "Detail still."
+    - type: "image"
+      src: "/images/projects/my-project-featured-2.jpg"
+      caption: "Stage atmosphere."
   gallery:
     - type: "image"
       src: "/images/projects/my-project-1.jpg"
@@ -224,7 +231,10 @@ To show up nicely on cards and the project page, you should always include:
 * `media`:
 
   * `heroImage`: main image used on cards and top of detail page.
+  * `featured`: optional spotlight tiles (used in theatre_v2 layout).
   * `gallery`: more images or videos.
+    If left empty (or omitted) and `heroImage` lives under `/images/projects/<folder>/`,
+    all images in that folder are auto-included, sorted by filename number.
 
 The Markdown body (everything after the `---` frontmatter) is used as the main description.
 
@@ -311,6 +321,10 @@ In your project frontmatter, reference them like:
 ```yaml
 media:
   heroImage: "/images/projects/my-project-hero.jpg"
+  featured:
+    - type: "image"
+      src: "/images/projects/my-project-featured-1.jpg"
+      caption: "Optional featured tile."
   gallery:
     - type: "image"
       src: "/images/projects/my-project-1.jpg"

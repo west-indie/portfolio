@@ -1,5 +1,15 @@
 import assert from 'node:assert/strict';
-import { isHttpUrl, isYearValid, normalizeHttpUrl, parseCollaboratorsCsv, slugify, splitCsv } from '../lib/schema.mjs';
+import {
+  buildCategoryEntryLines,
+  isHttpUrl,
+  isKnownCategory,
+  isYearValid,
+  normalizeHttpUrl,
+  normalizeTagList,
+  parseCollaboratorsCsv,
+  slugify,
+  splitCsv,
+} from '../lib/schema.mjs';
 
 export default async function run() {
   assert.equal(slugify('Signal Weaver 2026!'), 'signal-weaver-2026');
@@ -14,4 +24,14 @@ export default async function run() {
   assert.equal(isHttpUrl(normalizeHttpUrl('example.com')), true);
   assert.equal(isYearValid('2026'), true);
   assert.equal(isYearValid('1899'), false);
+  assert.equal(isKnownCategory('performance'), true);
+  assert.equal(isKnownCategory('unknown'), false);
+  assert.deepEqual(normalizeTagList([' Sound Design ', 'sound-design', 'Music Composition']), [
+    'sound design',
+    'music composition',
+  ]);
+  assert.deepEqual(buildCategoryEntryLines('performance', { venue: 'Old Globe', runDates: 'Apr 2026' }), [
+    'Venue: Old Globe',
+    'Run Dates: Apr 2026',
+  ]);
 }
