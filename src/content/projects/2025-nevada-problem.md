@@ -18,6 +18,8 @@ disciplines:
   - design-production
 omitTechStack: true
 omitLinkStack: true
+hidden: false
+hideFromWorkPage: false
 techStack:
   - TouchDesigner
   - GLSL
@@ -37,9 +39,16 @@ media:
       src: /images/projects/2025-nevada-problem/nevada-03.jpeg
     - type: image
       src: /images/projects/2025-nevada-problem/nevada-04.jpeg
+    - type: video
+      src: /images/projects/2025-nevada-problem/IMG_0600.mp4
     - type: image
       src: /images/projects/2025-nevada-problem/nevada-05.jpeg
   heroImage: /images/projects/2025-nevada-problem/nevada-01.jpeg
+  featured:
+    - type: video
+      src: /images/projects/2025-nevada-problem/IMG_0599.mp4
+    - type: video
+      src: /images/projects/2025-nevada-problem/IMG_0601.mp4
   omitFeaturedFromGallery: false
 shortDescription: Short film stitched with real-time shader overlays reacting to on-set Foley.
 client: Independent
@@ -56,9 +65,5 @@ cast:
     role: '"Cali"'
   - name: Darius Woodard
     role: '"Marc"'
-hidden: false
-hideFromWorkPage: false
-featured: true
-featuredOrder: 1
 ---
 Shot on a shoestring budget, *Midnight Static* experiments with generative overlays tied to Foley input. I built a compact sensor rig to capture tactile noises and drive shader parameters; the result let us improvise visual motifs in camera rather than in post.
