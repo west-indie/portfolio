@@ -34,7 +34,9 @@ collaborators: []
 links: {}
 media:
   gallery: []
+  heroImage: /images/projects/2026-sunset-engine/SunsetEngine2026040712PIMG.png
   omitFeaturedFromGallery: false
+layout: codingv1
 shortDescription: 'VST synth plug-in with a groove sequencer and deep filter shaping, inspired by lo-fi, jungle, house, and Miami bass.'
 client: New Ultraviolet Systems Basic
 moreWork:
