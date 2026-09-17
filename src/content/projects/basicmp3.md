@@ -21,7 +21,11 @@ techStack: []
 collaborators: []
 links: {}
 media:
-  gallery: []
+  gallery:
+    - type: image
+      src: /images/projects/2026-basicmp3/BasicMP3-hero.png
+  heroImage: /images/projects/2026-basicmp3/BasicMP3-icon.png
+  heroFit: height
   omitFeaturedFromGallery: false
 layout: codingv1
 shortDescription: Video-to-audio downloader with six export formats and queued processing.

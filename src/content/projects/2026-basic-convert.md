@@ -8,7 +8,7 @@ category: program
 categoryMeta: {}
 entryLines: []
 role: Lead Design and Programmer
-location: ''
+location: New Ultraviolet Systems Basic
 disciplines:
   - code-programs
   - media-pipeline
@@ -16,18 +16,23 @@ disciplines:
   - automation-tools
 omitTechStack: true
 omitLinkStack: true
+hidden: false
+hideFromWorkPage: false
 techStack: []
 collaborators: []
 links: {}
 media:
-  gallery: []
+  gallery:
+    - type: image
+      src: /images/projects/2026-basic-convert/BasicConverter-hero.png
+  heroImage: /images/projects/2026-basic-convert/BasicConverter-default.png
+  heroFit: width
   omitFeaturedFromGallery: false
+layout: codingv1
 shortDescription: Universal media converter that supports accelerated high volume batch processing
 client: New Ultraviolet Systems Basic
 moreWork:
   - test-title
   - signal-weaver
-hidden: false
-hideFromWorkPage: false
 ---
 A Universal Batch Processing Media Converter.
