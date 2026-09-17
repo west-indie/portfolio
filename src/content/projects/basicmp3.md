@@ -1,7 +1,7 @@
 ---
 slug: 2026-basicmp3
 title: BasicMP3
-subtitle: Audio extractor for videos that features a built-in video to audio convertor.
+subtitle: Video-to-audio downloader with six export formats and queued processing.
 year: '2026'
 month: 09
 category: program
@@ -24,10 +24,10 @@ media:
   gallery: []
   omitFeaturedFromGallery: false
 layout: codingv1
-shortDescription: Audio extractor for videos that features a built-in video to audio convertor.
+shortDescription: Video-to-audio downloader with six export formats and queued processing.
 client: New Ultraviolet Systems Basic
 moreWork:
   - 2026-basic-convert
   - 2026-sunset-engine
 ---
-Idk
+A desktop tool for turning supported video links into audio files. Preview a source, choose the format and quality, then manage downloads in a queue.
