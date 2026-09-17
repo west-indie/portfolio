@@ -65,5 +65,7 @@ cast:
     role: '"Cali"'
   - name: Darius Woodard
     role: '"Marc"'
+featured: true
+featuredOrder: 1
 ---
 Shot on a shoestring budget, *Midnight Static* experiments with generative overlays tied to Foley input. I built a compact sensor rig to capture tactile noises and drive shader parameters; the result let us improvise visual motifs in camera rather than in post.
