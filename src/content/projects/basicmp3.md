@@ -23,8 +23,10 @@ links: {}
 media:
   gallery:
     - type: image
+      src: /images/projects/2026-basicmp3/BasicMP3-icon.png
+    - type: image
       src: /images/projects/2026-basicmp3/BasicMP3-hero.png
-  heroImage: /images/projects/2026-basicmp3/BasicMP3-icon.png
+  heroImage: /images/projects/2026-basicmp3/BasicMP3-portfolio-hero.png
   heroFit: height
   omitFeaturedFromGallery: false
 layout: codingv1
