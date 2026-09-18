@@ -24,7 +24,7 @@ Key commands:
 - `work` launches the TTY dashboard (`Create`, `Validate`, `Deploy`, `Quit`).
 - `work create` supports interactive wizard mode (TTY) or `--from <json-file>` (non-TTY).
 - `work validate` defaults to `--changed`; use `--all` for full catalog checks.
-- `work deploy` runs preflight (`validate`, `lint`, `test`, `build`), then commits scoped work/media changes and pushes the current branch.
+- `work deploy` runs preflight (`validate`, `lint`, `test`, `build`), then commits portfolio source/content changes and pushes the current branch.
 
 ---
 
@@ -224,6 +224,8 @@ To show up nicely on cards and the project page, you should always include:
 * `hideFromWorkPage: true`: keeps the direct project URL active while removing the entry from Work and related-work lists.
 * `hidden: true`: removes the entry from public project routes as well as listing pages.
 * `layout`: selects an explicit project layout. Program and tooling entries can use `codingv1` or the workflow-focused `codingv2` layout.
+* `omitWorkflow: true`: hides the `## Workflow` section on coding v2 pages while keeping the steps in the Markdown for later editing.
+* Coding v2 descriptions use `## Built around the task`, `## Workflow`, and `## Design and build notes` sections. MagicMan numbers steps for editing; the site connects them with arrows.
 * `techStack`: relevant tools for code/program projects.
 * `collaborators`: list of people with roles.
 * `links`:

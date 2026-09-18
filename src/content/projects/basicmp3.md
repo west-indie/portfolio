@@ -5,6 +5,7 @@ subtitle: Video-to-audio downloader with six export formats and queued processin
 year: '2026'
 month: 09
 category: program
+layout: codingv2
 categoryMeta:
   type: Desktop application
   platform: Windows
@@ -13,7 +14,8 @@ entryLines:
   - 'Type: Desktop application'
   - 'Platform: Windows'
   - 'Focus: Video-to-audio conversion and queued processing'
-role: Lead Design and Programmer
+role: Lead Designer and Programmer
+location: New Ultraviolet Systems Basic
 disciplines:
   - code-programs
   - automation-tools
@@ -34,7 +36,6 @@ media:
   heroImage: /images/projects/2026-basicmp3/BasicMP3-portfolio-hero.png
   heroFit: height
   omitFeaturedFromGallery: false
-layout: codingv2
 shortDescription: Video-to-audio downloader with six export formats and queued processing.
 client: New Ultraviolet Systems Basic
 moreWork:
@@ -51,26 +52,14 @@ BasicMP3 keeps the path from a supported video link to a finished audio file sho
 
 ## Workflow
 
-<div class="codingv2-workflow" role="list" aria-label="BasicMP3 workflow">
-  <div class="codingv2-workflow-step" role="listitem">
-    <strong>Paste</strong>
-    <p>Add a supported video link.</p>
-  </div>
+<div class="codingv2-workflow" role="list" aria-label="Workflow steps">
+  <div class="codingv2-workflow-step" role="listitem"><strong>Paste</strong><p>Add a supported video link.</p></div>
   <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
-  <div class="codingv2-workflow-step" role="listitem">
-    <strong>Preview</strong>
-    <p>Verify the source and its metadata.</p>
-  </div>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Preview</strong><p>Verify the source and its metadata.</p></div>
   <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
-  <div class="codingv2-workflow-step" role="listitem">
-    <strong>Configure</strong>
-    <p>Choose the format and output quality.</p>
-  </div>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Configure</strong><p>Choose the format and output quality.</p></div>
   <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
-  <div class="codingv2-workflow-step" role="listitem">
-    <strong>Queue</strong>
-    <p>Track each export from one place.</p>
-  </div>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Queue</strong><p>Track each export from one place.</p></div>
 </div>
 
 ## Design and build notes

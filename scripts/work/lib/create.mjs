@@ -155,6 +155,7 @@ export async function createWorkEntry({
     disciplines: uniqStrings(parsed.disciplines),
     omitTechStack: parsed.omitTechStack === true,
     omitLinkStack: parsed.omitLinkStack === true,
+    ...(parsed.omitWorkflow === true ? { omitWorkflow: true } : {}),
     hidden: parsed.hidden === true,
     hideFromWorkPage: parsed.hideFromWorkPage === true,
     techStack: uniqStrings(parsed.techStack),

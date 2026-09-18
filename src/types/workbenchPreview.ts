@@ -19,6 +19,7 @@ export interface WorkbenchPreviewDraft {
   hideFromWorkPage: boolean;
   omitTechStack: boolean;
   omitLinkStack: boolean;
+  omitWorkflow: boolean;
   techStack: string[];
   collaborators: Collaborator[];
   cast: Collaborator[];

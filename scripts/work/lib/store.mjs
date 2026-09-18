@@ -75,6 +75,7 @@ function normalizeFrontmatterForWrite(frontmatter) {
     disciplines: Array.isArray(frontmatter.disciplines) ? frontmatter.disciplines : [],
     omitTechStack: frontmatter.omitTechStack === true,
     omitLinkStack: frontmatter.omitLinkStack === true,
+    ...(frontmatter.omitWorkflow === true ? { omitWorkflow: true } : {}),
     hidden: frontmatter.hidden === true,
     hideFromWorkPage: frontmatter.hideFromWorkPage === true,
     techStack: Array.isArray(frontmatter.techStack) ? frontmatter.techStack : [],

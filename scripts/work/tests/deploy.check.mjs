@@ -17,9 +17,11 @@ const ENTRY = `---\nslug: \"signal-weaver\"\ntitle: \"Signal Weaver\"\nsubtitle:
 export default async function run() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'work-deploy-test-'));
   await fs.mkdir(path.join(root, 'src', 'content', 'projects'), { recursive: true });
+  await fs.mkdir(path.join(root, 'src', 'lib'), { recursive: true });
   await fs.mkdir(path.join(root, 'public', 'images', 'projects'), { recursive: true });
   await fs.writeFile(path.join(root, 'src', 'content', 'projects', 'signal-weaver.md'), ENTRY, 'utf8');
   await fs.writeFile(path.join(root, 'public', 'images', 'projects', 'signal-weaver-hero.jpg'), 'x', 'utf8');
+  await fs.writeFile(path.join(root, 'src', 'index.css'), 'body {}\n', 'utf8');
 
   git(['init'], root);
   git(['config', 'user.email', 'test@example.com'], root);
@@ -29,6 +31,8 @@ export default async function run() {
   git(['commit', '-m', 'init'], root);
 
   await fs.writeFile(path.join(root, 'src', 'content', 'projects', 'signal-weaver.md'), ENTRY.replace('Body', 'Body updated'), 'utf8');
+  await fs.writeFile(path.join(root, 'src', 'index.css'), 'body { color: white; }\n', 'utf8');
+  await fs.writeFile(path.join(root, 'src', 'lib', 'codingV2.ts'), 'export const layout = "codingv2";\n', 'utf8');
 
   const result = await runDeployWorkflow({
     cwd: root,
@@ -38,6 +42,8 @@ export default async function run() {
 
   assert.equal(result.ok, true);
   assert.ok(result.logs.some((line) => line.startsWith('git add -A --')));
+  assert.ok(result.staged.includes('src/index.css'));
+  assert.ok(result.staged.includes('src/lib/codingV2.ts'));
   assert.ok(result.logs.some((line) => line.startsWith('git commit -m')));
   assert.ok(result.logs.some((line) => line.startsWith('git push')));
 }

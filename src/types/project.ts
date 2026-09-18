@@ -46,6 +46,7 @@ export interface Project {
   featuredOrder?: number;
   omitTechStack?: boolean;
   omitLinkStack?: boolean;
+  omitWorkflow?: boolean;
   techStack?: string[];
   collaborators?: Collaborator[];
   cast?: Collaborator[];

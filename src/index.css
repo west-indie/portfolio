@@ -119,8 +119,7 @@ a {
 }
 
 [data-project-layout='codingv2'] .codingv2-workflow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  display: flex;
   align-items: stretch;
   gap: 0.6rem;
   width: 100%;
@@ -130,6 +129,7 @@ a {
 
 [data-project-layout='codingv2'] .codingv2-workflow-step {
   display: flex;
+  flex: 1 1 0;
   min-width: 0;
   min-height: 5.25rem;
   flex-direction: column;

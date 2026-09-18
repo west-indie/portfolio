@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { createWorkEntry } from './work/lib/create.mjs';
 import { runDeployWorkflow } from './work/lib/deploy.mjs';
@@ -75,18 +77,17 @@ function normalizePath(filePath) {
 
 function isScopedWorkPath(filePath) {
   const normalized = normalizePath(filePath);
-  if (normalized.startsWith('src/content/projects/') && normalized.endsWith('.md')) return true;
-  if (normalized === 'src/content/projects/_tags.json') return true;
-  if (normalized === 'src/content/projects/_entry-templates.json') return true;
-  if (normalized === 'src/content/projects/_work-page-settings.json') return true;
-  if (normalized.startsWith('public/images/projects/')) return true;
-  if (normalized.startsWith('public/video/projects/')) return true;
-  return false;
+  return /^(src|scripts|public)\//.test(normalized)
+    || [
+      'index.html', '404.html', 'README.md', 'package.json', 'package-lock.json',
+      'vite.config.ts', 'postcss.config.cjs', 'tailwind.config.cjs',
+      'tsconfig.json', 'tsconfig.node.json', '.github/workflows/deploy.yml',
+    ].includes(normalized);
 }
 
 function collectScopedChangedPaths(root = process.cwd()) {
   if (!isGitRepository(root)) return [];
-  const status = runGit(['status', '--porcelain'], { cwd: root, allowFailure: true });
+  const status = runGit(['status', '--porcelain', '--untracked-files=all'], { cwd: root, allowFailure: true });
   if (!status.ok) return [];
   const scoped = changedPathsFromPorcelain(status.stdout)
     .map((filePath) => normalizePath(filePath))
@@ -94,9 +95,20 @@ function collectScopedChangedPaths(root = process.cwd()) {
   return Array.from(new Set(scoped)).sort((a, b) => a.localeCompare(b));
 }
 
-function snapshotKeyFromPaths(paths) {
+function snapshotKeyFromPaths(root, paths) {
   if (!Array.isArray(paths) || paths.length === 0) return '';
-  return paths.join('\n');
+  return paths.map((relativePath) => {
+    const absolutePath = path.resolve(root, relativePath);
+    try {
+      const stat = fsSync.lstatSync(absolutePath);
+      if (stat.isSymbolicLink()) return `${relativePath}:link:${fsSync.readlinkSync(absolutePath)}`;
+      if (!stat.isFile()) return `${relativePath}:not-file`;
+      if (stat.size > 10 * 1024 * 1024) return `${relativePath}:large:${stat.size}:${stat.mtimeMs}`;
+      return `${relativePath}:${crypto.createHash('sha256').update(fsSync.readFileSync(absolutePath)).digest('hex')}`;
+    } catch {
+      return `${relativePath}:deleted`;
+    }
+  }).join('\n');
 }
 
 function normalizeStringList(values) {
@@ -243,13 +255,13 @@ function resolveWorkflowState({ root = process.cwd(), validatedSnapshotKey = '' 
   }
 
   const scopedChangedPaths = collectScopedChangedPaths(root);
-  const snapshotKey = snapshotKeyFromPaths(scopedChangedPaths);
+  const snapshotKey = snapshotKeyFromPaths(root, scopedChangedPaths);
 
   if (scopedChangedPaths.length === 0) {
     return {
       firstRequired: null,
       disabledMenuIds: ['deploy'],
-      reason: 'No scoped /work changes detected. Create/edit content before deploy.',
+      reason: 'No publishable portfolio changes detected.',
       scopedChangedPaths,
       snapshotKey,
       inGitRepo,

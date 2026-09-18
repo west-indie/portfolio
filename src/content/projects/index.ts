@@ -1,7 +1,8 @@
 import matter from 'gray-matter';
 import { marked } from 'marked';
 import type { MediaItem, Project } from '../../types/project';
-import { normalizeProjectLayout } from '../../lib/projectLayout';
+import { normalizeProjectLayout, resolveProjectLayout } from '../../lib/projectLayout';
+import { codingV2Body } from '../../lib/codingV2';
 import { normalizeDisciplines } from '../../lib/disciplines';
 
 const projectFiles = import.meta.glob('./*.md', { query: '?raw', import: 'default', eager: true });
@@ -145,7 +146,7 @@ function normalizeMedia(value: unknown): Project['media'] {
 
   return {
     ...(heroImage ? { heroImage } : {}),
-    ...(heroImage ? { heroFit } : {}),
+    ...(heroFit === 'height' ? { heroFit } : {}),
     ...(resolvedGallery.length > 0 ? { gallery: resolvedGallery } : {}),
     ...(featured.length > 0 ? { featured } : {}),
     ...(omitFeaturedFromGallery ? { omitFeaturedFromGallery } : {}),
@@ -155,7 +156,8 @@ function normalizeMedia(value: unknown): Project['media'] {
 
 function normalizeProject(raw: string): Project {
   const { data, content } = matter(raw);
-  const body = marked.parse(content).toString();
+  const isCodingV2 = resolveProjectLayout(data.layout, data.category) === 'codingv2';
+  const body = marked.parse(codingV2Body(content, isCodingV2 && data.omitWorkflow === true)).toString();
 
   const project: Project = {
     slug: data.slug ?? '',
@@ -180,6 +182,7 @@ function normalizeProject(raw: string): Project {
     featuredOrder: normalizeFeaturedOrder(data.featuredOrder),
     omitTechStack: data.omitTechStack === true,
     omitLinkStack: data.omitLinkStack === true,
+    omitWorkflow: data.omitWorkflow === true,
     techStack: normalizeStringList(data.techStack),
     collaborators: Array.isArray(data.collaborators) ? data.collaborators : undefined,
     cast: Array.isArray(data.cast) ? data.cast : undefined,

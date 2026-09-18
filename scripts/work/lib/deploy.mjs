@@ -9,12 +9,12 @@ function normalizePath(filePath) {
 
 function isAllowedPath(filePath) {
   const normalized = normalizePath(filePath);
-  if (normalized.startsWith('src/content/projects/') && normalized.endsWith('.md')) return true;
-  if (normalized === 'src/content/projects/_tags.json') return true;
-  if (normalized === 'src/content/projects/_entry-templates.json') return true;
-  if (normalized.startsWith('public/images/projects/')) return true;
-  if (normalized.startsWith('public/video/projects/')) return true;
-  return false;
+  return /^(src|scripts|public)\//.test(normalized)
+    || [
+      'index.html', '404.html', 'README.md', 'package.json', 'package-lock.json',
+      'vite.config.ts', 'postcss.config.cjs', 'tailwind.config.cjs',
+      'tsconfig.json', 'tsconfig.node.json', '.github/workflows/deploy.yml',
+    ].includes(normalized);
 }
 
 function runCommand(command, args, { cwd = process.cwd(), dryRun = false, label = null } = {}) {
@@ -117,7 +117,7 @@ async function resolveCommitMessage({ cwd }) {
 }
 
 function collectScopedChangedPaths(cwd) {
-  const status = runGit(['status', '--porcelain'], { cwd, allowFailure: true });
+  const status = runGit(['status', '--porcelain', '--untracked-files=all'], { cwd, allowFailure: true });
   if (!status.ok) return [];
   return changedPathsFromPorcelain(status.stdout)
     .map(normalizePath)
@@ -193,7 +193,7 @@ export async function runDeployWorkflow({
 
   const scopedChanged = collectScopedChangedPaths(cwd);
   if (scopedChanged.length === 0) {
-    throw new Error('No scoped work/media changes found to deploy.');
+    throw new Error('No publishable portfolio changes found to deploy.');
   }
 
   const stageArgs = ['add', '-A', '--', ...scopedChanged];

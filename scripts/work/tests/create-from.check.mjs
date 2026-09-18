@@ -55,8 +55,10 @@ export default async function run() {
   const written = await fs.readFile(path.join(root, report.relativeFilePath), 'utf8');
   assert.match(written, /title:\s+Signal Weaver/);
   assert.match(written, /stack:/);
-  assert.match(written, /title:\s+GitHub[\s\S]*url:\s+'?https:\/\/github.com\/example\/repo'?/);
-  assert.match(written, /title:\s+Live Demo[\s\S]*url:\s+'?https:\/\/example.com\/demo'?/);
+  assert.match(written, /title:\s+GitHub/);
+  assert.match(written, /url:\s+'?https:\/\/github.com\/example\/repo'?/);
+  assert.match(written, /title:\s+Live Demo/);
+  assert.match(written, /url:\s+'?https:\/\/example.com\/demo'?/);
   assert.match(written, /title:\s+Review/);
   assert.match(written, /url:\s+'?https:\/\/news.example.com\/story'?/);
   assert.match(written, /category:\s+performance/);
@@ -66,5 +68,27 @@ export default async function run() {
   assert.match(written, /tags:/);
   assert.match(written, /entryLines:/);
   assert.match(written, /gallery:/);
+  assert.match(written, /heroFit:\s+height/);
   assert.doesNotMatch(written, /caption:\s+undefined/);
+
+  const coding = await createWorkEntry({
+    root,
+    input: {
+      slug: 'numbered-workflow',
+      title: 'Numbered Workflow',
+      subtitle: 'A coding v2 example.',
+      year: '2026',
+      category: 'program',
+      layout: 'codingv2',
+      role: 'Developer',
+      disciplines: ['code-programs'],
+      omitWorkflow: true,
+      media: { heroImage: '', gallery: [] },
+      description: '## Workflow\n\n1. Paste\n2. Export',
+    },
+  });
+  const codingMarkdown = await fs.readFile(path.join(root, coding.relativeFilePath), 'utf8');
+  assert.match(codingMarkdown, /layout:\s+codingv2/);
+  assert.match(codingMarkdown, /omitWorkflow:\s+true/);
+  assert.match(codingMarkdown, /1\. Paste[\s\S]*2\. Export/);
 }

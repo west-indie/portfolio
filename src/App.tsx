@@ -238,6 +238,7 @@ function normalizePreviewDraft(value: unknown): WorkbenchPreviewDraft | null {
     hideFromWorkPage: draft.hideFromWorkPage === true,
     omitTechStack: draft.omitTechStack === true,
     omitLinkStack: draft.omitLinkStack === true,
+    omitWorkflow: draft.omitWorkflow === true,
     techStack: normalizeStringArray(draft.techStack),
     collaborators: normalizeCollaborators(draft.collaborators),
     cast: normalizeCollaborators(draft.cast),

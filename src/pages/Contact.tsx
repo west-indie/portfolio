@@ -136,7 +136,7 @@ export default function Contact() {
           <a href="mailto:newultravioletsound@gmail.com" className="block underline">
             newultravioletsound@gmail.com
           </a>
-          <a href="https://github.com/" className="block underline">
+          <a href="https://github.com/west-indie" className="block underline">
             GitHub
           </a>
           <a href="https://linkedin.com/" className="block underline">

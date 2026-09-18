@@ -11,6 +11,7 @@ import type { ProjectLayoutProps } from '../components/project-layouts/types';
 import { getProjectBySlug, getWorkProjects } from '../content/projects';
 import { normalizeDisciplines } from '../lib/disciplines';
 import { resolveProjectLayout } from '../lib/projectLayout';
+import { codingV2Body } from '../lib/codingV2';
 import type { LinkStackItem, Project, ProjectLayout } from '../types/project';
 import type { WorkbenchPreviewDraft } from '../types/workbenchPreview';
 
@@ -126,6 +127,7 @@ function buildProjectFromPreviewDraft(draft: WorkbenchPreviewDraft, base?: Proje
     featured: base?.featured,
     omitTechStack: draft.omitTechStack,
     omitLinkStack: draft.omitLinkStack,
+    omitWorkflow: draft.omitWorkflow,
     techStack: draft.techStack,
     collaborators: draft.collaborators,
     cast: draft.cast,
@@ -137,7 +139,10 @@ function buildProjectFromPreviewDraft(draft: WorkbenchPreviewDraft, base?: Proje
       featured: draft.media.featured,
       omitFeaturedFromGallery: draft.media.omitFeaturedFromGallery,
     },
-    body: marked.parse(draft.description || '').toString(),
+    body: marked.parse(codingV2Body(
+      draft.description || '',
+      resolveProjectLayout(draft.layout, draft.category) === 'codingv2' && draft.omitWorkflow,
+    )).toString(),
   };
 }
 
