@@ -51,9 +51,9 @@ export default async function run() {
 
   const written = await fs.readFile(path.join(root, report.relativeFilePath), 'utf8');
   assert.match(written, /title:\s+Signal Weaver/);
-  assert.match(written, /github:\s+'?https:\/\/github.com\/example\/repo'?/);
-  assert.match(written, /liveDemo:\s+'?https:\/\/example.com\/demo'?/);
   assert.match(written, /stack:/);
+  assert.match(written, /title:\s+GitHub[\s\S]*url:\s+'?https:\/\/github.com\/example\/repo'?/);
+  assert.match(written, /title:\s+Live Demo[\s\S]*url:\s+'?https:\/\/example.com\/demo'?/);
   assert.match(written, /title:\s+Review/);
   assert.match(written, /url:\s+'?https:\/\/news.example.com\/story'?/);
   assert.match(written, /category:\s+performance/);

@@ -58,22 +58,22 @@ a {
   background: linear-gradient(90deg, rgba(139, 92, 246, 1), rgba(59, 130, 246, 0.95), rgba(251, 146, 60, 0.9));
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon::-webkit-scrollbar {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-shell {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-shell {
   position: relative;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker {
   margin: 0 1rem 0.5rem;
   height: 10px;
   opacity: 0;
@@ -81,11 +81,11 @@ a {
   transition: opacity 180ms ease;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker.is-active {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker.is-active {
   opacity: 1;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-track {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker-track {
   position: relative;
   height: 10px;
   border-radius: 9999px;
@@ -95,7 +95,7 @@ a {
   overflow: hidden;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-thumb {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker-thumb {
   position: absolute;
   top: 0;
   height: 100%;
@@ -105,14 +105,14 @@ a {
   will-change: width, left;
 }
 
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item {
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item {
   outline: 1px solid transparent;
   outline-offset: -1px;
   transition: outline-color 180ms ease, box-shadow 180ms ease;
 }
 
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:hover,
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:focus-within {
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item:hover,
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item:focus-within {
   outline-color: rgba(124, 58, 237, 0.9);
   box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.55);
   z-index: 2;

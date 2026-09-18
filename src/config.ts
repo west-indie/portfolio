@@ -96,7 +96,14 @@ const WORK_CHIP_GROUP_PREFIX = 'group:';
 function normalizeProjectGroupToken(value: unknown): string {
   const raw = String(value || '').trim().toLowerCase();
   if (!raw) return '';
-  if (raw === 'codingv1' || raw === 'coding_v1' || raw === 'coding-v1') {
+  if (
+    raw === 'codingv1'
+    || raw === 'coding_v1'
+    || raw === 'coding-v1'
+    || raw === 'codingv2'
+    || raw === 'coding_v2'
+    || raw === 'coding-v2'
+  ) {
     return 'codingv1';
   }
 
@@ -443,6 +450,7 @@ const LAYOUT_DETAIL_FIELDS: Record<ProjectLayout, LayoutDetailField[]> = {
   ],
   general_v1: [],
   codingv1: [],
+  codingv2: [],
 };
 
 export function resolveLayoutDetailEntries(

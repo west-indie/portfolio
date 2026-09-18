@@ -6,6 +6,7 @@ import TheatreV2Layout from '../components/project-layouts/TheatreV2Layout';
 import FilmV1Layout from '../components/project-layouts/FilmV1Layout';
 import GeneralV1Layout from '../components/project-layouts/GeneralV1Layout';
 import CodingV1Layout from '../components/project-layouts/CodingV1Layout';
+import CodingV2Layout from '../components/project-layouts/CodingV2Layout';
 import type { ProjectLayoutProps } from '../components/project-layouts/types';
 import { getAllProjects, getProjectBySlug } from '../content/projects';
 import { normalizeDisciplines } from '../lib/disciplines';
@@ -19,6 +20,7 @@ const PROJECT_LAYOUT_COMPONENTS: Record<ProjectLayout, ComponentType<ProjectLayo
   film_v1: FilmV1Layout,
   general_v1: GeneralV1Layout,
   codingv1: CodingV1Layout,
+  codingv2: CodingV2Layout,
 };
 
 function normalizeLinkStack(value: unknown): LinkStackItem[] {

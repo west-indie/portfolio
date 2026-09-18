@@ -67,15 +67,19 @@ export const CATEGORY_DEFINITIONS = {
     id: 'tooling',
     label: 'Tooling / Systems',
     detailFields: [
-      { key: 'systemType', label: 'System Type', required: true },
-      { key: 'integrations', label: 'Integrations', required: false },
-      { key: 'delivery', label: 'Delivery', required: false },
+      { key: 'type', label: 'Type', required: false },
+      { key: 'platform', label: 'Platform', required: false },
+      { key: 'focus', label: 'Focus', required: false },
     ],
   },
   program: {
     id: 'program',
     label: 'Program',
-    detailFields: [],
+    detailFields: [
+      { key: 'type', label: 'Type', required: false },
+      { key: 'platform', label: 'Platform', required: false },
+      { key: 'focus', label: 'Focus', required: false },
+    ],
   },
 };
 

@@ -21,6 +21,8 @@ const CATEGORY_LAYOUT_MAP: Record<string, ProjectLayout> = {
   'general-v1': 'general_v1',
   codingv1: 'codingv1',
   'coding-v1': 'codingv1',
+  codingv2: 'codingv2',
+  'coding-v2': 'codingv2',
 };
 
 function normalizeCategoryToken(value: unknown): string {
@@ -38,6 +40,9 @@ function normalizeLayoutId(value: unknown): ProjectLayout | undefined {
   if (!raw) return undefined;
   if (raw === 'codingv1' || raw === 'coding_v1' || raw === 'coding-v1') {
     return 'codingv1';
+  }
+  if (raw === 'codingv2' || raw === 'coding_v2' || raw === 'coding-v2') {
+    return 'codingv2';
   }
 
   const normalized = raw.replace(/[\s-]+/g, '_');
@@ -58,6 +63,8 @@ export function normalizeProjectLayout(value: unknown): ProjectLayout | undefine
 }
 
 export function resolveProjectLayout(_layout?: unknown, category?: unknown): ProjectLayout {
+  const normalizedLayout = normalizeLayoutId(_layout);
+  if (normalizedLayout) return normalizedLayout;
   const normalizedCategory = normalizeCategoryToken(category);
   return CATEGORY_LAYOUT_MAP[normalizedCategory] ?? DEFAULT_PROJECT_LAYOUT;
 }

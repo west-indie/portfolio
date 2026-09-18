@@ -55,7 +55,23 @@
     {
       "id": "program",
       "label": "Program",
-      "detailFields": []
+      "detailFields": [
+        {
+          "key": "type",
+          "label": "Type",
+          "required": false
+        },
+        {
+          "key": "platform",
+          "label": "Platform",
+          "required": false
+        },
+        {
+          "key": "focus",
+          "label": "Focus",
+          "required": false
+        }
+      ]
     },
     {
       "id": "short-film",
@@ -76,7 +92,23 @@
     {
       "id": "tooling",
       "label": "Tooling / Systems",
-      "detailFields": []
+      "detailFields": [
+        {
+          "key": "type",
+          "label": "Type",
+          "required": false
+        },
+        {
+          "key": "platform",
+          "label": "Platform",
+          "required": false
+        },
+        {
+          "key": "focus",
+          "label": "Focus",
+          "required": false
+        }
+      ]
     }
   ]
 }
