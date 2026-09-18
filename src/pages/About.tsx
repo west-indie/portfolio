@@ -12,7 +12,7 @@ export default function About() {
         />
         <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
           <p className="font-semibold">Leo Nunez</p>
-          <p className="text-sm text-gray-400">Technical Designer &amp; Artist</p>
+          <p className="text-sm text-gray-400">Technical Designer & Artist</p>
           <p className="text-sm text-gray-400">Based in sound, light, and live systems.</p>
         </div>
       </div>

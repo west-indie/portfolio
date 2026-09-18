@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { formatCategoryLabel, formatDisciplineLabel } from '../../config';
+import {
+  formatCategoryLabel,
+  formatDisciplineLabel,
+  resolveCategoryDetailEntries,
+} from '../../config';
 import { resolveAssetPath } from '../../lib/assetPath';
 import type { MediaItem } from '../../types/project';
 import type { ProjectLayoutProps } from './types';
@@ -42,32 +46,6 @@ function renderMedia(item: MediaItem, imageAlt?: string) {
   return null;
 }
 
-function renderFeaturedMedia(item: MediaItem, imageAlt?: string) {
-  const src = resolveAssetPath(item.src);
-  if (item.type === 'image') {
-    return (
-      <img
-        src={src}
-        alt={imageAlt ?? item.caption ?? ''}
-        className="h-full w-full object-cover"
-        loading="lazy"
-      />
-    );
-  }
-  if (item.type === 'video') {
-    return (
-      <video controls className="h-full w-full object-cover bg-black">
-        <source src={src} />
-        <track kind="captions" label="Captions" src={resolveAssetPath('/captions-placeholder.vtt')} />
-      </video>
-    );
-  }
-  if (item.type === 'embed') {
-    return <iframe src={src} title={item.caption ?? 'Embedded media'} className="h-full w-full" allowFullScreen loading="lazy" />;
-  }
-  return null;
-}
-
 function extractFilenameNumber(src: string): number | null {
   const sanitized = String(src || '').trim().split(/[?#]/)[0] || '';
   const fileName = sanitized.split('/').pop() || '';
@@ -98,7 +76,7 @@ function sortGalleryByFilenameNumber(items: MediaItem[]): MediaItem[] {
     .map((entry) => entry.item);
 }
 
-export default function CodingV1Layout({
+export default function CodingV2Layout({
   project,
   others,
   stackLinks,
@@ -112,6 +90,23 @@ export default function CodingV1Layout({
     thumbWidth: 100,
   });
   const categoryLabel = formatCategoryLabel(project.category);
+  const categoryDetails = useMemo(
+    () => resolveCategoryDetailEntries(project.category, project.categoryMeta, project.entryLines),
+    [project.category, project.categoryMeta, project.entryLines],
+  );
+  const sidebarDetails = useMemo(() => {
+    if (categoryDetails.some((entry) => entry.label.toLowerCase() === 'type')) {
+      return categoryDetails;
+    }
+    return categoryLabel
+      ? [{ label: 'Type', value: categoryLabel }, ...categoryDetails]
+      : categoryDetails;
+  }, [categoryDetails, categoryLabel]);
+  const projectContext = [...new Set(
+    [project.client, project.location]
+      .map((value) => String(value || '').trim())
+      .filter(Boolean),
+  )].join(' - ');
 
   const mergedMedia = useMemo<DisplayMediaItem[]>(() => {
     if (!project.media) return [];
@@ -155,28 +150,6 @@ export default function CodingV1Layout({
 
     return merged;
   }, [project.media]);
-
-  const featuredMedia = useMemo<MediaItem[]>(() => {
-    const featured = Array.isArray(project.media?.featured)
-      ? project.media.featured
-      : (Array.isArray(project.media?.placeholders) ? project.media.placeholders : []);
-
-    return featured
-      .map((item) => {
-        const src = String(item?.src || '').trim();
-        if (!src) return null;
-        const type = item.type === 'video' || item.type === 'embed' || item.type === 'image'
-          ? item.type
-          : 'image';
-        return {
-          type,
-          src,
-          ...(item.caption ? { caption: String(item.caption).trim() } : {}),
-        };
-      })
-      .filter((item): item is MediaItem => Boolean(item))
-      .slice(0, 2);
-  }, [project.media?.featured, project.media?.placeholders]);
 
   useEffect(() => {
     if (!activeImage) return undefined;
@@ -274,6 +247,13 @@ export default function CodingV1Layout({
         <p className="text-gray-300">{project.role}</p>
       </div>
 
+      {sidebarDetails.map((entry) => (
+        <div key={`${entry.label}:${entry.value}`} data-mwb-highlight-id="category-meta">
+          <h3 className="font-semibold mb-2">{entry.label}</h3>
+          <p className="text-gray-300">{entry.value}</p>
+        </div>
+      ))}
+
       <div data-mwb-highlight-id="disciplines">
         <h3 className="font-semibold mb-2">Disciplines</h3>
         <div className="flex flex-wrap gap-2">
@@ -310,18 +290,6 @@ export default function CodingV1Layout({
         </div>
       ) : null}
 
-      {hasLinks ? (
-        <div className="space-y-2" data-mwb-highlight-id="links">
-          <h3 className="font-semibold">Links</h3>
-          <div className="flex flex-col gap-2 text-accent">
-            {stackLinks.map((link) => (
-              <a key={`${link.title}:${link.url}`} href={link.url} className="underline" data-mwb-highlight-id="links-stack">
-                {link.title}
-              </a>
-            ))}
-          </div>
-        </div>
-      ) : null}
     </aside>
   );
 
@@ -359,29 +327,81 @@ export default function CodingV1Layout({
   );
 
   return (
-    <div className="space-y-6" data-project-layout="codingv1">
+    <div className="space-y-6" data-project-layout="codingv2">
       <header className="space-y-3">
         <p className="text-sm text-gray-400" data-mwb-highlight-id="year">
           {project.year}
         </p>
 
-        <h1 className="text-3xl font-semibold" data-mwb-highlight-id="title">
-          {project.title}
-        </h1>
+        <div className="grid gap-5 lg:grid-cols-3 lg:gap-10">
+          <div className="space-y-3 lg:col-span-2">
+            <h1 className="text-3xl font-semibold" data-mwb-highlight-id="title">
+              {project.title}
+            </h1>
 
-        <p className="text-gray-300" data-mwb-highlight-id="subtitle">
-          {project.subtitle}
-        </p>
+            <p className="text-gray-300" data-mwb-highlight-id="subtitle">
+              {project.subtitle}
+            </p>
 
-        <p className="text-gray-300">
-          {[project.role, categoryLabel].filter(Boolean).join(' \u2022 ')}
-        </p>
+            <p className="text-gray-300">
+              {[project.role, categoryLabel].filter(Boolean).join(' \u2022 ')}
+            </p>
 
-        {(project.client || project.location) ? (
-          <p className="text-gray-400 text-sm" data-mwb-highlight-id="location">
-            {[project.client, project.location].filter(Boolean).join(' - ')}
-          </p>
-        ) : null}
+            {projectContext ? (
+              <p className="text-gray-400 text-sm" data-mwb-highlight-id="location">
+                {projectContext}
+              </p>
+            ) : null}
+          </div>
+
+          {!project.omitLinkStack ? (
+            <div
+              className="grid grid-cols-1 gap-3 self-start sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+              data-mwb-highlight-id="links"
+            >
+              {hasLinks ? (
+                stackLinks.map((link) => {
+                  const isDownload = /download/i.test(link.title) || /\.zip(?:$|[?#])/i.test(link.url);
+                  return (
+                    <a
+                      key={`${link.title}:${link.url}`}
+                      href={link.url}
+                      className={isDownload
+                        ? 'inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-5 py-2.5 text-center font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'
+                        : 'inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-center font-semibold text-white transition hover:border-accent hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'}
+                      data-mwb-highlight-id="links-stack"
+                      download={isDownload ? '' : undefined}
+                      target={isDownload ? undefined : '_blank'}
+                      rel={isDownload ? undefined : 'noreferrer'}
+                      aria-label={`${link.title}${isDownload ? '' : ' (opens in a new tab)'}`}
+                    >
+                      {link.title}
+                    </a>
+                  );
+                })
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    disabled
+                    className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center rounded-lg bg-accent px-5 py-2.5 text-center font-semibold text-white opacity-50"
+                    title="Download will be available when the first release is published."
+                  >
+                    Download for Windows (.zip)
+                  </button>
+                  <button
+                    type="button"
+                    disabled
+                    className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-center font-semibold text-white opacity-50"
+                    title="Source code will be available when the repository is published."
+                  >
+                    View source
+                  </button>
+                </>
+              )}
+            </div>
+          ) : null}
+        </div>
       </header>
 
       {mergedMedia.length > 0 ? (
@@ -416,35 +436,6 @@ export default function CodingV1Layout({
             dangerouslySetInnerHTML={{ __html: project.body }}
             data-mwb-highlight-id="description"
           />
-
-          {featuredMedia.length > 0 ? (
-            <section aria-label="Featured media">
-              <div className="grid sm:grid-cols-2 gap-3">
-                {featuredMedia.map((featured, featuredIndex) => (
-                  <article
-                    key={`featured-${featuredIndex}`}
-                    aria-label={`Featured media ${featuredIndex + 1}`}
-                    className="group aspect-[4/3] overflow-hidden rounded-lg border border-white/20 bg-black/40 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/80 hover:ring-2 hover:ring-accent/45 focus-within:-translate-y-0.5 focus-within:border-accent/80 focus-within:ring-2 focus-within:ring-accent/45"
-                  >
-                    {featured.type === 'image' ? (
-                      <button
-                        type="button"
-                        className="block h-full w-full border-0 bg-transparent p-0"
-                        onClick={() => setActiveImage({
-                          src: resolveAssetPath(featured.src),
-                          alt: featured.caption ?? project.title,
-                        })}
-                      >
-                        {renderFeaturedMedia(featured, featured.caption ?? project.title)}
-                      </button>
-                    ) : (
-                      renderFeaturedMedia(featured, featured.caption ?? project.title)
-                    )}
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
         </div>
 
         {detailAside}

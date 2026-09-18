@@ -10,7 +10,7 @@ const DISCIPLINE_CHIP_PREFIX = 'discipline:';
 const PROJECT_GROUP_CHIP_PREFIX = 'group:';
 
 function resolveProjectGroupToken(layout: string) {
-  if (layout === 'codingv1') return 'codingv1';
+  if (layout === 'codingv1' || layout === 'codingv2') return 'codingv1';
   if (layout === 'film_v1') return 'film_v1';
   if (layout === 'theatre_v1' || layout === 'theatre_v2') return 'theatre_v2';
   return '';

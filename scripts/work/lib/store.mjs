@@ -66,6 +66,7 @@ function normalizeFrontmatterForWrite(frontmatter) {
     year: frontmatter.year,
     month: frontmatter.month,
     category: frontmatter.category || DEFAULT_CATEGORY,
+    ...(frontmatter.layout ? { layout: frontmatter.layout } : {}),
     tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
     categoryMeta: frontmatter.categoryMeta || {},
     entryLines: Array.isArray(frontmatter.entryLines) ? frontmatter.entryLines : [],

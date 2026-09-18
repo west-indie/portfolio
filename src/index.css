@@ -58,22 +58,22 @@ a {
   background: linear-gradient(90deg, rgba(139, 92, 246, 1), rgba(59, 130, 246, 0.95), rgba(251, 146, 60, 0.9));
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon::-webkit-scrollbar {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-shell {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-shell {
   position: relative;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker {
   margin: 0 1rem 0.5rem;
   height: 10px;
   opacity: 0;
@@ -81,11 +81,11 @@ a {
   transition: opacity 180ms ease;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker.is-active {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker.is-active {
   opacity: 1;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-track {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker-track {
   position: relative;
   height: 10px;
   border-radius: 9999px;
@@ -95,7 +95,7 @@ a {
   overflow: hidden;
 }
 
-:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-marker-thumb {
+:is([data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-marker-thumb {
   position: absolute;
   top: 0;
   height: 100%;
@@ -105,15 +105,88 @@ a {
   will-change: width, left;
 }
 
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item {
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item {
   outline: 1px solid transparent;
   outline-offset: -1px;
   transition: outline-color 180ms ease, box-shadow 180ms ease;
 }
 
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:hover,
-:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1']) .media-ribbon-item:focus-within {
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item:hover,
+:is([data-project-layout='theatre_v1'], [data-project-layout='theatre_v2'], [data-project-layout='film_v1'], [data-project-layout='general_v1'], [data-project-layout='codingv1'], [data-project-layout='codingv2']) .media-ribbon-item:focus-within {
   outline-color: rgba(124, 58, 237, 0.9);
   box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.55);
   z-index: 2;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 1.25rem 0 0;
+  padding: 0.15rem 0 0;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step {
+  display: flex;
+  min-width: 0;
+  min-height: 5.25rem;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(255, 255, 255, 0.04) 48%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step strong {
+  display: block;
+  color: rgb(244, 244, 245);
+  font-size: 0.95rem;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step p {
+  margin: 0.35rem 0 0;
+  color: rgb(161, 161, 170);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-arrow {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  margin: 0;
+  color: rgb(139, 92, 246);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  [data-project-layout='codingv2'] .codingv2-workflow {
+    gap: 0.3rem;
+  }
+
+  [data-project-layout='codingv2'] .codingv2-workflow-step {
+    padding: 0.6rem 0.45rem;
+    border-radius: 0.6rem;
+  }
+
+  [data-project-layout='codingv2'] .codingv2-workflow-step strong {
+    font-size: 0.78rem;
+  }
+
+  [data-project-layout='codingv2'] .codingv2-workflow-step p {
+    font-size: 0.66rem;
+    line-height: 1.25;
+  }
+
+  [data-project-layout='codingv2'] .codingv2-workflow-arrow {
+    font-size: 0.85rem;
+  }
 }

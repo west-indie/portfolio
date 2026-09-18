@@ -23,6 +23,7 @@ export default async function run() {
       title: 'Signal Weaver',
       subtitle: 'Realtime cueing for performance.',
       category: 'performance',
+      layout: 'theatre_v2',
       tags: ['sound design', 'music composition'],
       categoryMeta: {
         venue: 'Mainstage',
@@ -39,7 +40,9 @@ export default async function run() {
       },
       media: {
         heroImage: heroSrc,
+        heroFit: 'height',
         gallery: [{ src: gallerySrc }],
+        omitFeaturedFromGallery: true,
       },
       description: 'A markdown body.',
     },
@@ -51,12 +54,15 @@ export default async function run() {
 
   const written = await fs.readFile(path.join(root, report.relativeFilePath), 'utf8');
   assert.match(written, /title:\s+Signal Weaver/);
-  assert.match(written, /github:\s+'?https:\/\/github.com\/example\/repo'?/);
-  assert.match(written, /liveDemo:\s+'?https:\/\/example.com\/demo'?/);
   assert.match(written, /stack:/);
+  assert.match(written, /title:\s+GitHub[\s\S]*url:\s+'?https:\/\/github.com\/example\/repo'?/);
+  assert.match(written, /title:\s+Live Demo[\s\S]*url:\s+'?https:\/\/example.com\/demo'?/);
   assert.match(written, /title:\s+Review/);
   assert.match(written, /url:\s+'?https:\/\/news.example.com\/story'?/);
   assert.match(written, /category:\s+performance/);
+  assert.match(written, /layout:\s+theatre_v2/);
+  assert.match(written, /heroFit:\s+height/);
+  assert.match(written, /omitFeaturedFromGallery:\s+true/);
   assert.match(written, /tags:/);
   assert.match(written, /entryLines:/);
   assert.match(written, /gallery:/);

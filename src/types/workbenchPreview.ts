@@ -27,7 +27,10 @@ export interface WorkbenchPreviewDraft {
   };
   media: {
     heroImage: string;
+    heroFit: 'width' | 'height';
     gallery: MediaItem[];
+    featured: MediaItem[];
+    omitFeaturedFromGallery: boolean;
   };
   description: string;
   entryLines: string[];

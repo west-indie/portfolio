@@ -1,5 +1,5 @@
 export type MediaItemType = 'image' | 'video' | 'embed';
-export type ProjectLayout = 'theatre_v1' | 'theatre_v2' | 'film_v1' | 'general_v1' | 'codingv1';
+export type ProjectLayout = 'theatre_v1' | 'theatre_v2' | 'film_v1' | 'general_v1' | 'codingv1' | 'codingv2';
 
 export interface MediaItem {
   type: MediaItemType;
@@ -52,8 +52,11 @@ export interface Project {
   links?: ProjectLinks;
   media?: {
     heroImage?: string;
+    heroFit?: 'width' | 'height';
     gallery?: MediaItem[];
     featured?: MediaItem[];
+    // Legacy alias retained while older entries are migrated to featured.
+    placeholders?: MediaItem[];
     omitFeaturedFromGallery?: boolean;
   };
   body: string;

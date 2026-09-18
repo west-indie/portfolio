@@ -10,29 +10,11 @@ const heroItems = [
 ];
 
 const focusChips = [
-  
-  
-  
-  
-  
-  
-  
-  
-  
   'Music & Composition',
   'Design & Production',
   'Sound Design & Audio Engineering',
   'Lighting & Technical Direction',
   'Programming and Coding Tools',
-
-
-
-
-
-
-
-
-
 ];
 
 export default function Home() {
@@ -51,7 +33,7 @@ export default function Home() {
             >
               {item.id === 'title' && (
                 <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-                  Leo Nunez – Technical Designer &amp; Artist
+                  Leo Nunez – Technical Designer & Artist
                 </h1>
               )}
               {item.id === 'subtitle' && (
