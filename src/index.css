@@ -117,3 +117,65 @@ a {
   box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.55);
   z-index: 2;
 }
+
+[data-project-layout='codingv2'] .codingv2-workflow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+  margin: 1.25rem 0 0;
+  padding: 0.15rem 0 0.75rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: rgba(124, 58, 237, 0.75) rgba(255, 255, 255, 0.08);
+  scrollbar-width: thin;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step {
+  display: flex;
+  flex: 1 0 9.5rem;
+  min-width: 9.5rem;
+  min-height: 9.5rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(255, 255, 255, 0.04) 48%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-number {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: rgb(167, 139, 250);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step strong {
+  display: block;
+  color: rgb(244, 244, 245);
+  font-size: 1rem;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-step p {
+  margin: 0.55rem 0 0;
+  color: rgb(161, 161, 170);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+[data-project-layout='codingv2'] .codingv2-workflow-arrow {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  margin: 0;
+  color: rgb(139, 92, 246);
+  font-size: 1.5rem;
+  line-height: 1;
+}

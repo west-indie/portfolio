@@ -46,12 +46,39 @@ moreWork:
 
 BasicMP3 keeps the path from a supported video link to a finished audio file short and legible. The interface centers the source preview, export settings, and queue instead of exposing technical setup that does not help with the download.
 
+## Key features
+
+- **01 — Preview before exporting.** Verify the source and metadata before the download enters the queue.
+- **02 — Six export formats.** Choose the format and quality that fit the destination instead of converting twice.
+- **03 — Queued processing.** Prepare several exports and let the application process them in order.
+
 ## Workflow
 
-1. Paste a supported video link.
-2. Preview the source before exporting.
-3. Choose one of six audio formats and set the output quality.
-4. Add the job to the queue and manage progress from one place.
+<div class="codingv2-workflow" role="list" aria-label="BasicMP3 workflow">
+  <div class="codingv2-workflow-step" role="listitem">
+    <span class="codingv2-workflow-number">01</span>
+    <strong>Paste</strong>
+    <p>Add a supported video link.</p>
+  </div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem">
+    <span class="codingv2-workflow-number">02</span>
+    <strong>Preview</strong>
+    <p>Verify the source and its metadata.</p>
+  </div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem">
+    <span class="codingv2-workflow-number">03</span>
+    <strong>Configure</strong>
+    <p>Choose the format and output quality.</p>
+  </div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem">
+    <span class="codingv2-workflow-number">04</span>
+    <strong>Queue</strong>
+    <p>Track each export from one place.</p>
+  </div>
+</div>
 
 ## Design and build notes
 
