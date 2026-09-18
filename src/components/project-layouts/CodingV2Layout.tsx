@@ -102,6 +102,11 @@ export default function CodingV1Layout({
       ? [{ label: 'Type', value: categoryLabel }, ...categoryDetails]
       : categoryDetails;
   }, [categoryDetails, categoryLabel]);
+  const projectContext = [...new Set(
+    [project.client, project.location]
+      .map((value) => String(value || '').trim())
+      .filter(Boolean),
+  )].join(' - ');
 
   const mergedMedia = useMemo<DisplayMediaItem[]>(() => {
     if (!project.media) return [];
@@ -328,8 +333,8 @@ export default function CodingV1Layout({
           {project.year}
         </p>
 
-        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-3xl space-y-3">
+        <div className="grid gap-5 lg:grid-cols-3 lg:gap-10">
+          <div className="space-y-3 lg:col-span-2">
             <h1 className="text-3xl font-semibold" data-mwb-highlight-id="title">
               {project.title}
             </h1>
@@ -337,10 +342,23 @@ export default function CodingV1Layout({
             <p className="text-gray-300" data-mwb-highlight-id="subtitle">
               {project.subtitle}
             </p>
+
+            <p className="text-gray-300">
+              {[project.role, categoryLabel].filter(Boolean).join(' \u2022 ')}
+            </p>
+
+            {projectContext ? (
+              <p className="text-gray-400 text-sm" data-mwb-highlight-id="location">
+                {projectContext}
+              </p>
+            ) : null}
           </div>
 
           {!project.omitLinkStack ? (
-            <div className="flex flex-wrap gap-3 md:justify-end" data-mwb-highlight-id="links">
+            <div
+              className="grid grid-cols-1 gap-3 self-start sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+              data-mwb-highlight-id="links"
+            >
               {hasLinks ? (
                 stackLinks.map((link) => {
                   const isDownload = /download/i.test(link.title) || /\.zip(?:$|[?#])/i.test(link.url);
@@ -349,8 +367,8 @@ export default function CodingV1Layout({
                       key={`${link.title}:${link.url}`}
                       href={link.url}
                       className={isDownload
-                        ? 'inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-5 py-2.5 font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'
-                        : 'inline-flex min-h-11 items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 font-semibold text-white transition hover:border-accent hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'}
+                        ? 'inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-5 py-2.5 text-center font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'
+                        : 'inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-center font-semibold text-white transition hover:border-accent hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background'}
                       data-mwb-highlight-id="links-stack"
                       download={isDownload ? '' : undefined}
                       target={isDownload ? undefined : '_blank'}
@@ -366,7 +384,7 @@ export default function CodingV1Layout({
                   <button
                     type="button"
                     disabled
-                    className="inline-flex min-h-11 cursor-not-allowed items-center justify-center rounded-lg bg-accent px-5 py-2.5 font-semibold text-white opacity-50"
+                    className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center rounded-lg bg-accent px-5 py-2.5 text-center font-semibold text-white opacity-50"
                     title="Download will be available when the first release is published."
                   >
                     Download for Windows (.zip)
@@ -374,7 +392,7 @@ export default function CodingV1Layout({
                   <button
                     type="button"
                     disabled
-                    className="inline-flex min-h-11 cursor-not-allowed items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 font-semibold text-white opacity-50"
+                    className="inline-flex min-h-11 w-full cursor-not-allowed items-center justify-center rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-center font-semibold text-white opacity-50"
                     title="Source code will be available when the repository is published."
                   >
                     View source
@@ -384,16 +402,6 @@ export default function CodingV1Layout({
             </div>
           ) : null}
         </div>
-
-        <p className="text-gray-300">
-          {[project.role, categoryLabel].filter(Boolean).join(' \u2022 ')}
-        </p>
-
-        {(project.client || project.location) ? (
-          <p className="text-gray-400 text-sm" data-mwb-highlight-id="location">
-            {[project.client, project.location].filter(Boolean).join(' - ')}
-          </p>
-        ) : null}
       </header>
 
       {mergedMedia.length > 0 ? (

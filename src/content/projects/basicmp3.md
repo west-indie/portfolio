@@ -14,7 +14,6 @@ entryLines:
   - 'Platform: Windows'
   - 'Focus: Video-to-audio conversion and queued processing'
 role: Lead Design and Programmer
-location: New Ultraviolet Systems Basic
 disciplines:
   - code-programs
   - automation-tools
