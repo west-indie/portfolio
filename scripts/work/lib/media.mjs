@@ -209,7 +209,9 @@ export async function materializeMedia({ slug, media, root = process.cwd(), dryR
     media: {
       gallery,
       ...(heroResult?.src ? { heroImage: heroResult.src } : {}),
+      heroFit: media.heroFit === 'height' ? 'height' : 'width',
       ...(featured.length > 0 ? { featured } : {}),
+      omitFeaturedFromGallery: media.omitFeaturedFromGallery === true,
     },
     operations,
   };

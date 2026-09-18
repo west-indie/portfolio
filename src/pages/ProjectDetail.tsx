@@ -8,7 +8,7 @@ import GeneralV1Layout from '../components/project-layouts/GeneralV1Layout';
 import CodingV1Layout from '../components/project-layouts/CodingV1Layout';
 import CodingV2Layout from '../components/project-layouts/CodingV2Layout';
 import type { ProjectLayoutProps } from '../components/project-layouts/types';
-import { getAllProjects, getProjectBySlug } from '../content/projects';
+import { getProjectBySlug, getWorkProjects } from '../content/projects';
 import { normalizeDisciplines } from '../lib/disciplines';
 import { resolveProjectLayout } from '../lib/projectLayout';
 import type { LinkStackItem, Project, ProjectLayout } from '../types/project';
@@ -132,9 +132,10 @@ function buildProjectFromPreviewDraft(draft: WorkbenchPreviewDraft, base?: Proje
     links: stack.length > 0 ? { stack } : undefined,
     media: {
       heroImage: draft.media.heroImage.trim() || undefined,
+      heroFit: draft.media.heroFit,
       gallery: draft.media.gallery,
-      featured: base?.media?.featured ?? base?.media?.placeholders,
-      omitFeaturedFromGallery: base?.media?.omitFeaturedFromGallery,
+      featured: draft.media.featured,
+      omitFeaturedFromGallery: draft.media.omitFeaturedFromGallery,
     },
     body: marked.parse(draft.description || '').toString(),
   };
@@ -165,7 +166,7 @@ export default function ProjectDetail({ previewDraft }: ProjectDetailProps) {
   const activeSlug = String(project?.slug || routeSlug || '').trim();
 
   const others = useMemo(() => {
-    const allProjects = getAllProjects();
+    const allProjects = getWorkProjects();
     const bySlug = new Map<string, Project>();
     allProjects.forEach((candidate) => {
       const candidateSlug = String(candidate.slug || '').trim();

@@ -122,11 +122,22 @@ export const galleryItemSchema = z.object({
   caption: z.string().trim().optional(),
 });
 
+export const projectLayoutSchema = z.enum([
+  'theatre_v1',
+  'theatre_v2',
+  'film_v1',
+  'general_v1',
+  'codingv1',
+  'codingv2',
+]);
+
 export const mediaSchema = z.object({
   heroImage: z.string().trim().optional().default(''),
+  heroFit: z.enum(['width', 'height']).optional().default('width'),
   gallery: z.array(galleryItemSchema).default([]),
   featured: z.array(galleryItemSchema).optional(),
   placeholders: z.array(galleryItemSchema).optional(),
+  omitFeaturedFromGallery: z.boolean().optional().default(false),
 });
 
 export const workFrontmatterSchema = z.object({
@@ -136,6 +147,7 @@ export const workFrontmatterSchema = z.object({
   year: z.string().trim().min(1),
   month: z.string().trim().min(1),
   category: z.string().trim().min(1).default(DEFAULT_CATEGORY),
+  layout: projectLayoutSchema.optional(),
   tags: z.array(z.string().trim().min(1)).default([]),
   categoryMeta: z.record(z.string(), z.string()).default({}),
   entryLines: z.array(z.string().trim().min(1)).default([]),
@@ -159,6 +171,7 @@ export const createInputSchema = z.object({
   year: z.union([z.string(), z.number()]),
   month: z.union([z.string(), z.number()]).optional(),
   category: z.string().trim().optional().default(DEFAULT_CATEGORY),
+  layout: projectLayoutSchema.optional(),
   tags: z.array(z.string().trim().min(1)).default([]),
   categoryMeta: z.record(z.string(), z.string()).default({}),
   role: z.string().trim().min(1),
@@ -181,6 +194,7 @@ export const createInputSchema = z.object({
   }).default({}),
   media: z.object({
     heroImage: z.string().trim().optional().default(''),
+    heroFit: z.enum(['width', 'height']).optional().default('width'),
     gallery: z.array(z.object({
       src: z.string().trim().min(1),
       caption: z.string().trim().optional(),
@@ -191,6 +205,7 @@ export const createInputSchema = z.object({
       caption: z.string().trim().optional(),
       type: z.enum(['image', 'video', 'embed']).optional(),
     })).default([]),
+    omitFeaturedFromGallery: z.boolean().optional().default(false),
   }),
   description: z.string().min(1),
 });

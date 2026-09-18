@@ -52,6 +52,7 @@ export interface Project {
   links?: ProjectLinks;
   media?: {
     heroImage?: string;
+    heroFit?: 'width' | 'height';
     gallery?: MediaItem[];
     featured?: MediaItem[];
     // Legacy alias retained while older entries are migrated to featured.

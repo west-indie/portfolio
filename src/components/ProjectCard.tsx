@@ -25,7 +25,11 @@ export default function ProjectCard({ project, showTags = true }: Props) {
       >
         <div className="relative aspect-video bg-gradient-to-br from-accent/20 via-black to-indigo-700/30">
           {imageSrc ? (
-            <img src={imageSrc} alt={title} className="w-full h-full object-cover" />
+            <img
+              src={imageSrc}
+              alt={title}
+              className={`w-full h-full ${media?.heroFit === 'height' ? 'object-contain' : 'object-cover'}`}
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-2xl font-semibold text-foreground/70">
               {title}

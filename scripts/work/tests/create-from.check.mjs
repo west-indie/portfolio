@@ -23,6 +23,7 @@ export default async function run() {
       title: 'Signal Weaver',
       subtitle: 'Realtime cueing for performance.',
       category: 'performance',
+      layout: 'theatre_v2',
       tags: ['sound design', 'music composition'],
       categoryMeta: {
         venue: 'Mainstage',
@@ -39,7 +40,9 @@ export default async function run() {
       },
       media: {
         heroImage: heroSrc,
+        heroFit: 'height',
         gallery: [{ src: gallerySrc }],
+        omitFeaturedFromGallery: true,
       },
       description: 'A markdown body.',
     },
@@ -57,6 +60,9 @@ export default async function run() {
   assert.match(written, /title:\s+Review/);
   assert.match(written, /url:\s+'?https:\/\/news.example.com\/story'?/);
   assert.match(written, /category:\s+performance/);
+  assert.match(written, /layout:\s+theatre_v2/);
+  assert.match(written, /heroFit:\s+height/);
+  assert.match(written, /omitFeaturedFromGallery:\s+true/);
   assert.match(written, /tags:/);
   assert.match(written, /entryLines:/);
   assert.match(written, /gallery:/);

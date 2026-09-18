@@ -221,6 +221,9 @@ To show up nicely on cards and the project page, you should always include:
 * `location`: city, venue, festival, etc.
 * `tags`: technology or context keywords, e.g. `"Max/MSP"`, `"QLab"`, `"Unity"`, `"Premiere"`.
 * `featured: true`: shows the project on the **Home** page “Featured Work” strip.
+* `hideFromWorkPage: true`: keeps the direct project URL active while removing the entry from Work and related-work lists.
+* `hidden: true`: removes the entry from public project routes as well as listing pages.
+* `layout`: selects an explicit project layout. Program and tooling entries can use `codingv1` or the workflow-focused `codingv2` layout.
 * `techStack`: relevant tools for code/program projects.
 * `collaborators`: list of people with roles.
 * `links`:
@@ -231,6 +234,7 @@ To show up nicely on cards and the project page, you should always include:
 * `media`:
 
   * `heroImage`: main image used on cards and top of detail page.
+  * `heroFit`: `width` crops the card image to fill its frame; `height` keeps the full image visible.
   * `featured`: optional spotlight tiles (used in theatre_v2 layout).
   * `gallery`: more images or videos.
     If left empty (or omitted) and `heroImage` lives under `/images/projects/<folder>/`,

@@ -246,7 +246,10 @@ function normalizePreviewDraft(value: unknown): WorkbenchPreviewDraft | null {
     },
     media: {
       heroImage: normalizeString(mediaRaw?.heroImage).trim(),
+      heroFit: mediaRaw?.heroFit === 'height' ? 'height' : 'width',
       gallery: normalizeGallery(mediaRaw?.gallery),
+      featured: normalizeGallery(mediaRaw?.featured),
+      omitFeaturedFromGallery: mediaRaw?.omitFeaturedFromGallery === true,
     },
     description: normalizeString(draft.description),
     entryLines: normalizeStringArray(draft.entryLines),
@@ -283,6 +286,12 @@ function applyPreviewHighlight(target: string) {
 function AppRoutes({ previewDraft }: { previewDraft: WorkbenchPreviewDraft | null }) {
   const location = useLocation();
   const key = useMemo(() => location.pathname, [location.pathname]);
+
+  useEffect(() => {
+    const scrollingElement = document.scrollingElement || document.documentElement;
+    scrollingElement.scrollTop = 0;
+    scrollingElement.scrollLeft = 0;
+  }, [location.pathname]);
 
   return (
     <Layout>

@@ -146,6 +146,7 @@ export async function createWorkEntry({
     year,
     month,
     category,
+    ...(parsed.layout ? { layout: parsed.layout } : {}),
     tags,
     categoryMeta,
     entryLines: buildCategoryEntryLines(category, categoryMeta, categoryDefinitions),

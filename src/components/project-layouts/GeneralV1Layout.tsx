@@ -32,7 +32,7 @@ function renderMedia(item: MediaItem, imageAlt?: string) {
     return (
       <video controls className="block h-full w-auto max-w-none bg-black">
         <source src={src} />
-        <track kind="captions" label="Captions" src="/captions-placeholder.vtt" />
+        <track kind="captions" label="Captions" src={resolveAssetPath('/captions-placeholder.vtt')} />
       </video>
     );
   }
@@ -58,7 +58,7 @@ function renderFeaturedMedia(item: MediaItem, imageAlt?: string) {
     return (
       <video controls className="h-full w-full object-cover bg-black">
         <source src={src} />
-        <track kind="captions" label="Captions" src="/captions-placeholder.vtt" />
+        <track kind="captions" label="Captions" src={resolveAssetPath('/captions-placeholder.vtt')} />
       </video>
     );
   }
@@ -154,14 +154,7 @@ export default function GeneralV1Layout({
     filteredGallery.forEach((item) => pushMedia(item));
 
     return merged;
-  }, [
-    project.media,
-    project.media?.heroImage,
-    project.media?.gallery,
-    project.media?.featured,
-    project.media?.placeholders,
-    project.media?.omitFeaturedFromGallery,
-  ]);
+  }, [project.media]);
 
   const featuredMedia = useMemo<MediaItem[]>(() => {
     const featured = Array.isArray(project.media?.featured)
@@ -424,41 +417,34 @@ export default function GeneralV1Layout({
             data-mwb-highlight-id="description"
           />
 
-          <section aria-label="Featured media">
-            <div className="grid sm:grid-cols-2 gap-3">
-              {[0, 1].map((featuredIndex) => {
-                const featured = featuredMedia[featuredIndex];
-                const articleClassName = featured
-                  ? 'group aspect-[4/3] overflow-hidden rounded-lg border border-white/20 bg-black/40 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/80 hover:ring-2 hover:ring-accent/45 focus-within:-translate-y-0.5 focus-within:border-accent/80 focus-within:ring-2 focus-within:ring-accent/45'
-                  : 'aspect-[4/3] rounded-lg border border-dashed border-white/20 bg-white/[0.03]';
-
-                return (
+          {featuredMedia.length > 0 ? (
+            <section aria-label="Featured media">
+              <div className="grid sm:grid-cols-2 gap-3">
+                {featuredMedia.map((featured, featuredIndex) => (
                   <article
                     key={`featured-${featuredIndex}`}
                     aria-label={`Featured media ${featuredIndex + 1}`}
-                    className={articleClassName}
+                    className="group aspect-[4/3] overflow-hidden rounded-lg border border-white/20 bg-black/40 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/80 hover:ring-2 hover:ring-accent/45 focus-within:-translate-y-0.5 focus-within:border-accent/80 focus-within:ring-2 focus-within:ring-accent/45"
                   >
-                    {featured ? (
-                      featured.type === 'image' ? (
-                        <button
-                          type="button"
-                          className="block h-full w-full border-0 bg-transparent p-0"
-                          onClick={() => setActiveImage({
-                            src: resolveAssetPath(featured.src),
-                            alt: featured.caption ?? project.title,
-                          })}
-                        >
-                          {renderFeaturedMedia(featured, featured.caption ?? project.title)}
-                        </button>
-                      ) : (
-                        renderFeaturedMedia(featured, featured.caption ?? project.title)
-                      )
-                    ) : null}
+                    {featured.type === 'image' ? (
+                      <button
+                        type="button"
+                        className="block h-full w-full border-0 bg-transparent p-0"
+                        onClick={() => setActiveImage({
+                          src: resolveAssetPath(featured.src),
+                          alt: featured.caption ?? project.title,
+                        })}
+                      >
+                        {renderFeaturedMedia(featured, featured.caption ?? project.title)}
+                      </button>
+                    ) : (
+                      renderFeaturedMedia(featured, featured.caption ?? project.title)
+                    )}
                   </article>
-                );
-              })}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
 
         {detailAside}

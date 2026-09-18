@@ -36,7 +36,7 @@ function renderMedia(item: MediaItem, imageAlt?: string) {
     return (
       <video controls className="block h-full w-auto max-w-none bg-black">
         <source src={src} />
-        <track kind="captions" label="Captions" src="/captions-placeholder.vtt" />
+        <track kind="captions" label="Captions" src={resolveAssetPath('/captions-placeholder.vtt')} />
       </video>
     );
   }
@@ -76,7 +76,7 @@ function sortGalleryByFilenameNumber(items: MediaItem[]): MediaItem[] {
     .map((entry) => entry.item);
 }
 
-export default function CodingV1Layout({
+export default function CodingV2Layout({
   project,
   others,
   stackLinks,

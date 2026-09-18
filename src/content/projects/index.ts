@@ -110,6 +110,7 @@ function normalizeMedia(value: unknown): Project['media'] {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
   const media = value as Record<string, unknown>;
   const heroImage = typeof media.heroImage === 'string' ? media.heroImage : undefined;
+  const heroFit = media.heroFit === 'height' ? 'height' : 'width';
   const omitFeaturedFromGallery = media.omitFeaturedFromGallery === true;
   const normalizeMediaItems = (items: unknown): MediaItem[] => (
     Array.isArray(items)
@@ -144,6 +145,7 @@ function normalizeMedia(value: unknown): Project['media'] {
 
   return {
     ...(heroImage ? { heroImage } : {}),
+    ...(heroImage ? { heroFit } : {}),
     ...(resolvedGallery.length > 0 ? { gallery: resolvedGallery } : {}),
     ...(featured.length > 0 ? { featured } : {}),
     ...(omitFeaturedFromGallery ? { omitFeaturedFromGallery } : {}),

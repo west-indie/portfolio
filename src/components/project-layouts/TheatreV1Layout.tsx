@@ -32,7 +32,7 @@ function renderMedia(item: MediaItem, imageAlt?: string) {
     return (
       <video controls className="block h-full w-auto max-w-none bg-black">
         <source src={src} />
-        <track kind="captions" label="Captions" src="/captions-placeholder.vtt" />
+        <track kind="captions" label="Captions" src={resolveAssetPath('/captions-placeholder.vtt')} />
       </video>
     );
   }
@@ -123,14 +123,7 @@ export default function TheatreV1Layout({ project, others, stackLinks }: Project
     filteredGallery.forEach((item) => pushMedia(item));
 
     return merged;
-  }, [
-    project.media,
-    project.media?.heroImage,
-    project.media?.gallery,
-    project.media?.featured,
-    project.media?.placeholders,
-    project.media?.omitFeaturedFromGallery,
-  ]);
+  }, [project.media]);
 
   const tapestryStyle = useMemo<CSSProperties>(() => ({
     '--tapestry-height': `${tapestryHeight}px`,
@@ -370,4 +363,3 @@ function ProjectLink({ slug, title, role }: { slug: string; title: string; role:
     </Link>
   );
 }
-
