@@ -6,7 +6,15 @@ describe('resolveProjectLayout', () => {
     expect(resolveProjectLayout('codingv2', 'program')).toBe('codingv2');
   });
 
-  it('keeps coding v1 as the default for program entries', () => {
-    expect(resolveProjectLayout(undefined, 'program')).toBe('codingv1');
+  it('uses coding v2 as the default for coding categories', () => {
+    expect(resolveProjectLayout(undefined, 'interactive')).toBe('codingv2');
+    expect(resolveProjectLayout(undefined, 'interactive-media')).toBe('codingv2');
+    expect(resolveProjectLayout(undefined, 'tooling')).toBe('codingv2');
+    expect(resolveProjectLayout(undefined, 'program')).toBe('codingv2');
+    expect(resolveProjectLayout(undefined, 'programs')).toBe('codingv2');
+  });
+
+  it('retains coding v1 only when explicitly selected', () => {
+    expect(resolveProjectLayout('codingv1', 'program')).toBe('codingv1');
   });
 });
