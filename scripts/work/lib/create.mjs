@@ -16,7 +16,7 @@ import {
   requiredCategoryKeys,
   slugify,
 } from './schema.mjs';
-import { materializeMedia } from './media.mjs';
+import { materializeComposition, materializeMedia } from './media.mjs';
 import { writeProjectEntry } from './store.mjs';
 import { registerTags } from './tags.mjs';
 
@@ -132,9 +132,24 @@ export async function createWorkEntry({
 
   const tags = normalizeTagList(parsed.tags);
 
+  if (parsed.layout === 'composition_v1') {
+    if (!parsed.composition?.about) throw new Error('Composition entries require About the Piece content.');
+    if (!parsed.composition?.featuredExcerpt) throw new Error('Composition entries require a Featured Hero Excerpt audio source.');
+    if (!parsed.media?.heroImage) throw new Error('Composition entries require an Associated Hero Image.');
+    if (parsed.composition.selected && !parsed.composition.selectedOrder) {
+      throw new Error('Selected compositions require a selected order from 1 to 6.');
+    }
+  }
+
   const mediaResult = await materializeMedia({
     slug,
     media: parsed.media,
+    root,
+    dryRun,
+  });
+  const compositionResult = await materializeComposition({
+    slug,
+    composition: parsed.layout === 'composition_v1' ? parsed.composition : undefined,
     root,
     dryRun,
   });
@@ -146,7 +161,7 @@ export async function createWorkEntry({
     year,
     month,
     category,
-    ...(parsed.layout ? { layout: parsed.layout } : {}),
+    layout: parsed.layout,
     tags,
     categoryMeta,
     entryLines: buildCategoryEntryLines(category, categoryMeta, categoryDefinitions),
@@ -167,6 +182,7 @@ export async function createWorkEntry({
       .filter((item) => item.name),
     links: normalizeLinks(parsed.links),
     media: mediaResult.media,
+    ...(compositionResult.composition ? { composition: compositionResult.composition } : {}),
   };
 
   const writeResult = await writeProjectEntry({
@@ -192,7 +208,7 @@ export async function createWorkEntry({
     filePath: writeResult.filePath,
     relativeFilePath: writeResult.relativeFilePath,
     markdown: writeResult.content,
-    mediaOperations: mediaResult.operations,
+    mediaOperations: [...mediaResult.operations, ...compositionResult.operations],
     replaced: writeResult.replaced,
   };
 }

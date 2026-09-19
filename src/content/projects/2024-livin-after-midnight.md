@@ -5,6 +5,7 @@ subtitle: Two act musical that deals with themes of morality
 year: '2024'
 month: '11'
 category: performance
+layout: theatre_v2
 categoryMeta:
   venue: 'Trinity Theatre, San Diego, California'
 entryLines:

@@ -1,7 +1,7 @@
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import type { MediaItem, Project } from '../../types/project';
-import { normalizeProjectLayout, resolveProjectLayout } from '../../lib/projectLayout';
+import type { CompositionCredit, CompositionDetails, MediaItem, Project } from '../../types/project';
+import { resolveProjectLayout } from '../../lib/projectLayout';
 import { codingV2Body } from '../../lib/codingV2';
 import { normalizeDisciplines } from '../../lib/disciplines';
 
@@ -95,6 +95,44 @@ function normalizeFeaturedOrder(value: unknown): number | undefined {
   return parsed;
 }
 
+function normalizePositiveOrder(value: unknown): number | undefined {
+  const parsed = Number.parseInt(String(value ?? '').trim(), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+}
+
+function normalizeComposition(value: unknown): CompositionDetails | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  const source = value as Record<string, unknown>;
+  const hasContent = Object.values(source).some((item) => (
+    Array.isArray(item) ? item.length > 0 : (typeof item === 'boolean' ? item : Boolean(String(item || '').trim()))
+  ));
+  if (!hasContent) return undefined;
+  const credits = Array.isArray(source.credits)
+    ? source.credits.map((item) => {
+      if (!item || typeof item !== 'object' || Array.isArray(item)) return null;
+      const credit = item as Record<string, unknown>;
+      const label = String(credit.label || '').trim();
+      const creditValue = String(credit.value || '').trim();
+      return label && creditValue ? { label, value: creditValue } : null;
+    }).filter((item): item is CompositionCredit => Boolean(item))
+    : [];
+  const details: CompositionDetails = {
+    length: String(source.length || '').trim() || undefined,
+    about: String(source.about || '').trim() || undefined,
+    arrangementNotes: String(source.arrangementNotes || '').trim() || undefined,
+    featuredExcerpt: String(source.featuredExcerpt || '').trim() || undefined,
+    fullAudio: String(source.fullAudio || '').trim() || undefined,
+    selected: source.selected === true,
+    selectedOrder: normalizePositiveOrder(source.selectedOrder),
+    imageCredit: String(source.imageCredit || '').trim() || undefined,
+    imageSubject: String(source.imageSubject || '').trim() || undefined,
+    imageNote: String(source.imageNote || '').trim() || undefined,
+    instrumentation: normalizeStringList(source.instrumentation),
+    credits,
+  };
+  return details;
+}
+
 function numericYear(value: unknown): number {
   const parsed = Number.parseInt(String(value ?? '').trim(), 10);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -156,7 +194,7 @@ function normalizeMedia(value: unknown): Project['media'] {
 
 function normalizeProject(raw: string): Project {
   const { data, content } = matter(raw);
-  const isCodingV2 = resolveProjectLayout(data.layout, data.category) === 'codingv2';
+  const isCodingV2 = resolveProjectLayout(data.layout) === 'coding_v2';
   const body = marked.parse(codingV2Body(content, isCodingV2 && data.omitWorkflow === true)).toString();
 
   const project: Project = {
@@ -165,7 +203,7 @@ function normalizeProject(raw: string): Project {
     subtitle: data.subtitle ?? data.shortDescription ?? '',
     year: data.year ?? '-',
     month: normalizeMonth(data.month),
-    layout: normalizeProjectLayout(data.layout),
+    layout: resolveProjectLayout(data.layout),
     category: typeof data.category === 'string' ? data.category : undefined,
     entryLines: normalizeStringList(data.entryLines),
     categoryMeta: normalizeStringMap(data.categoryMeta),
@@ -183,6 +221,7 @@ function normalizeProject(raw: string): Project {
     omitTechStack: data.omitTechStack === true,
     omitLinkStack: data.omitLinkStack === true,
     omitWorkflow: data.omitWorkflow === true,
+    composition: normalizeComposition(data.composition),
     techStack: normalizeStringList(data.techStack),
     collaborators: Array.isArray(data.collaborators) ? data.collaborators : undefined,
     cast: Array.isArray(data.cast) ? data.cast : undefined,
@@ -236,6 +275,13 @@ export function getFeaturedProjects(): Project[] {
         || a.title.localeCompare(b.title)
       );
     });
+}
+
+export function getCompositionProjects(): Project[] {
+  return projects.filter((project) => (
+    !isProjectHidden(project)
+    && project.layout === 'composition_v1'
+  ));
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {

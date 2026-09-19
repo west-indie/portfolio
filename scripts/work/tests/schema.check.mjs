@@ -7,8 +7,10 @@ import {
   normalizeHttpUrl,
   normalizeTagList,
   parseCollaboratorsCsv,
+  projectLayoutSchema,
   slugify,
   splitCsv,
+  workFrontmatterSchema,
 } from '../lib/schema.mjs';
 
 export default async function run() {
@@ -26,6 +28,13 @@ export default async function run() {
   assert.equal(isYearValid('1899'), false);
   assert.equal(isKnownCategory('performance'), true);
   assert.equal(isKnownCategory('unknown'), false);
+  for (const layout of ['general_v1', 'composition_v1', 'film_v1', 'theatre_v2', 'coding_v2', 'scoring_v1']) {
+    assert.equal(projectLayoutSchema.safeParse(layout).success, true);
+  }
+  assert.equal(projectLayoutSchema.safeParse('codingv2').success, false);
+  const missingLayout = workFrontmatterSchema.safeParse({});
+  assert.equal(missingLayout.success, false);
+  assert.ok(missingLayout.error.issues.some((issue) => issue.path.join('.') === 'layout'));
   assert.deepEqual(normalizeTagList([' Sound Design ', 'sound-design', 'Music Composition']), [
     'sound design',
     'music composition',

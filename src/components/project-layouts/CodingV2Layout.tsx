@@ -327,7 +327,7 @@ export default function CodingV2Layout({
   );
 
   return (
-    <div className="space-y-6" data-project-layout="codingv2">
+    <div className="space-y-6" data-project-layout="coding_v2" data-project-slug={project.slug}>
       <header className="space-y-3">
         <p className="text-sm text-gray-400" data-mwb-highlight-id="year">
           {project.year}
@@ -343,9 +343,7 @@ export default function CodingV2Layout({
               {project.subtitle}
             </p>
 
-            <p className="text-gray-300">
-              {[project.role, categoryLabel].filter(Boolean).join(' \u2022 ')}
-            </p>
+            <p className="text-gray-300">{project.role}</p>
 
             {projectContext ? (
               <p className="text-gray-400 text-sm" data-mwb-highlight-id="location">

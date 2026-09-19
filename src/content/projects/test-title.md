@@ -5,6 +5,7 @@ subtitle: TEST SUBTITLE!
 year: '2026'
 month: '01'
 category: performance
+layout: theatre_v2
 tags:
   - Codex
   - MAXMSP

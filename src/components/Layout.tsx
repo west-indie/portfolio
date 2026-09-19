@@ -5,6 +5,7 @@ import { FaGithub, FaEnvelope } from 'react-icons/fa';
 const navItems = [
   { path: '/', label: 'Home' },
   { path: '/work', label: 'Work' },
+  { path: '/music', label: 'Music' },
   { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' }
 ];
@@ -15,7 +16,7 @@ const socialLinks = [
 ];
 
 function navClass(isActive: boolean) {
-  return `px-3 py-2 text-sm font-semibold transition-colors ${isActive ? 'text-foreground' : 'text-gray-400 hover:text-foreground'}`;
+  return `px-2 sm:px-3 py-2 text-sm font-semibold transition-colors ${isActive ? 'text-foreground' : 'text-gray-400 hover:text-foreground'}`;
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -26,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Link to="/" className="text-xl font-bold tracking-tight hover:text-accent">
             {SITE_TITLE}
           </Link>
-          <nav className="flex items-center space-x-2">
+          <nav className="flex items-center sm:space-x-2" aria-label="Primary navigation">
             {navItems.map((item) => (
               <NavLink key={item.path} to={item.path} className={({ isActive }) => navClass(isActive)}>
                 {item.label}

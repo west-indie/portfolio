@@ -1,11 +1,11 @@
 ---
 slug: 2026-sunset-engine
 title: Sunset Engine
-subtitle: 'VST synth plug-in with a groove sequencer and deep filter shaping, inspired by lo-fi, jungle, house, and Miami bass.'
+subtitle: 'VST synth plug-in with a groove engine and deep filter shaping, inspired by lo-fi, jungle, house, and Miami bass.'
 year: '2026'
 month: '02'
 category: tooling
-layout: codingv2
+layout: coding_v2
 tags:
   - C++
   - JUCE
@@ -29,6 +29,7 @@ disciplines:
   - sound
 omitTechStack: false
 omitLinkStack: true
+omitWorkflow: true
 hidden: false
 hideFromWorkPage: false
 techStack:
@@ -44,14 +45,14 @@ media:
   heroImage: /images/projects/2026-sunset-engine/SunsetEngine2026040712PIMG.png
   heroFit: width
   omitFeaturedFromGallery: false
-shortDescription: 'VST synth plug-in with a groove sequencer and deep filter shaping, inspired by lo-fi, jungle, house, and Miami bass.'
+shortDescription: 'VST synth plug-in with a groove engine and deep filter shaping, inspired by lo-fi, jungle, house, and Miami bass.'
 client: New Ultraviolet Systems Basic
 moreWork:
   - 2026-basic-convert
   - 2025-the-noise
   - 2024-new-plays
 ---
-## Built around the task
+## Groove first, filter forward
 
 Sunset Engine is built around movement, tone, and immediacy rather than maximum synthesis complexity. Its oscillators, filter, modulation, and groove systems are designed to work together so patches can quickly develop rhythmic motion and character without relying heavily on external processing.
 
@@ -62,7 +63,21 @@ The filter acts as the tonal centerpiece of the instrument, while pump, swing, h
 - **Focused modulation.** A deliberately small routing system keeps motion flexible without turning the interface into a large modulation matrix.
 - **Character processing.** Dirt, wow, resampling, space, and width provide warmth and degradation while supporting the core sound rather than overwhelming it.
 
-## Design and build notes
+## Signal flow
+
+<div class="codingv2-workflow" role="list" aria-label="Workflow steps">
+  <div class="codingv2-workflow-step" role="listitem"><strong>Generate</strong><p>Oscillators, sub, and noise create the source.</p></div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Shape</strong><p>Drive, filter, and envelopes establish the core tone.</p></div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Move</strong><p>Groove, pump, swing, humanization, and modulation animate the patch.</p></div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Color</strong><p>Dirt, wow, degradation, and related processing add character.</p></div>
+  <span class="codingv2-workflow-arrow" aria-hidden="true">→</span>
+  <div class="codingv2-workflow-step" role="listitem"><strong>Finish</strong><p>Space, width, and master processing complete the sound.</p></div>
+</div>
+
+## Designed for movement
 
 Sunset Engine was designed so movement feels like part of the instrument rather than an effect added afterward. Its timing systems share host tempo information across synced modulation, pump behavior, swing, and groove controls, allowing sustained sounds to develop rhythmic motion from within the patch itself.
 

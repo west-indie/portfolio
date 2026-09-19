@@ -5,6 +5,7 @@ subtitle: Epic and immersive staged production of the classic Shakespeare comedy
 year: '2024'
 month: '04'
 category: performance
+layout: theatre_v2
 tags:
   - QLab
   - Behringer X32 Sound Board

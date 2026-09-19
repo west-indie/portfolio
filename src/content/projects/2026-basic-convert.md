@@ -5,7 +5,7 @@ subtitle: 'Universal media converter built for accelerated, high-volume batch pr
 year: '2026'
 month: '03'
 category: program
-layout: codingv2
+layout: coding_v2
 categoryMeta:
   type: Desktop Application
   platform: Windows
@@ -42,7 +42,7 @@ moreWork:
   - test-title
   - signal-weaver
 ---
-## Built around the task
+## Built for mixed-format batches
 
 BasicConverter is designed around converting large groups of media without configuring every file individually. Files and folders can be collected into a single batch, assigned a target device or custom preset, and processed using format-specific conversion rules.
 
@@ -52,6 +52,7 @@ Rather than treating every input the same, the application allows compatible for
 - **Format mapping.** Define how detected input formats should be converted instead of applying one output format across the entire batch.
 - **Engine-aware processing.** Route conversions through compatible processing engines and configure output behavior for different media types.
 - **Reusable presets.** Save device or conversion configurations instead of rebuilding the same settings for repeated jobs.
+- **Format-aware theming.** The interface shifts by the primary media category: purple for video, red for audio, orange for PDF, mint green for archives, and cyan for office or general formats. The color change gives an immediate indication of the active media type.
 
 ## Workflow
 
@@ -65,8 +66,10 @@ Rather than treating every input the same, the application allows compatible for
   <div class="codingv2-workflow-step" role="listitem"><strong>Convert</strong><p>Run the batch and generate the configured outputs.</p></div>
 </div>
 
-## Design and build notes
+## Control without clutter
 
 BasicConverter exposes considerably more configuration than BasicMP3, so the interface is organized around progressive levels of control. Common batch settings remain visible at the top of the workspace, while format mappings, engine settings and output configuration are separated into dedicated tabs.
 
 The goal was to keep large conversion jobs configurable without forcing every option onto the screen at once. Device presets provide a faster starting point, while custom settings leave the underlying conversion pipeline accessible when more control is needed.
+
+The cyan and red hero views demonstrate this format-aware system across general and audio conversion modes; the same structure carries through the purple, orange, and mint variants.

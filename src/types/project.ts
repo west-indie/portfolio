@@ -1,5 +1,5 @@
 export type MediaItemType = 'image' | 'video' | 'embed';
-export type ProjectLayout = 'theatre_v1' | 'theatre_v2' | 'film_v1' | 'general_v1' | 'codingv1' | 'codingv2';
+export type ProjectLayout = 'general_v1' | 'composition_v1' | 'film_v1' | 'theatre_v2' | 'coding_v2' | 'scoring_v1';
 
 export interface MediaItem {
   type: MediaItemType;
@@ -23,13 +23,33 @@ export interface Collaborator {
   role?: string;
 }
 
+export interface CompositionCredit {
+  label: string;
+  value: string;
+}
+
+export interface CompositionDetails {
+  length?: string;
+  about?: string;
+  arrangementNotes?: string;
+  featuredExcerpt?: string;
+  fullAudio?: string;
+  selected?: boolean;
+  selectedOrder?: number;
+  imageCredit?: string;
+  imageSubject?: string;
+  imageNote?: string;
+  instrumentation?: string[];
+  credits?: CompositionCredit[];
+}
+
 export interface Project {
   slug: string;
   title: string;
   subtitle: string;
   year: string;
   month?: string;
-  layout?: ProjectLayout;
+  layout: ProjectLayout;
   category?: string;
   entryLines?: string[];
   categoryMeta?: Record<string, string>;
@@ -47,6 +67,7 @@ export interface Project {
   omitTechStack?: boolean;
   omitLinkStack?: boolean;
   omitWorkflow?: boolean;
+  composition?: CompositionDetails;
   techStack?: string[];
   collaborators?: Collaborator[];
   cast?: Collaborator[];

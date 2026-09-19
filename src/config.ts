@@ -84,9 +84,12 @@ function normalizeDisciplineTokenList(values: unknown) {
 }
 
 export const projectGroupDefinitions = Object.freeze([
-  { token: 'codingv1', label: 'Programs and Coding' },
-  { token: 'theatre_v2', label: 'Performance' },
+  { token: 'general_v1', label: 'Default' },
+  { token: 'composition_v1', label: 'Composition' },
   { token: 'film_v1', label: 'Film' },
+  { token: 'theatre_v2', label: 'Performance' },
+  { token: 'coding_v2', label: 'Coding' },
+  { token: 'scoring_v1', label: 'Scoring' },
 ]);
 
 const projectGroupTokenSet = new Set(projectGroupDefinitions.map((item) => item.token));
@@ -94,28 +97,8 @@ const WORK_CHIP_DISCIPLINE_PREFIX = 'discipline:';
 const WORK_CHIP_GROUP_PREFIX = 'group:';
 
 function normalizeProjectGroupToken(value: unknown): string {
-  const raw = String(value || '').trim().toLowerCase();
-  if (!raw) return '';
-  if (
-    raw === 'codingv1'
-    || raw === 'coding_v1'
-    || raw === 'coding-v1'
-    || raw === 'codingv2'
-    || raw === 'coding_v2'
-    || raw === 'coding-v2'
-  ) {
-    return 'codingv1';
-  }
-
-  const normalized = raw.replace(/[\s-]+/g, '_');
-  if (normalized === 'theatre_v1' || normalized === 'theatre_v2') {
-    return 'theatre_v2';
-  }
-  if (normalized === 'film_v1') {
-    return 'film_v1';
-  }
-
-  return '';
+  const normalized = String(value || '').trim().toLowerCase();
+  return projectGroupTokenSet.has(normalized) ? normalized : '';
 }
 
 function normalizeProjectGroupTokenList(values: unknown) {
@@ -370,6 +353,8 @@ export const categoryLabels: Record<string, string> = {
   installation: 'Installation',
   tooling: 'Tooling',
   program: 'Program',
+  composition: 'Composition',
+  music: 'Music',
 };
 
 function normalizeCategoryToken(value: unknown) {
@@ -434,11 +419,6 @@ export function resolveCategoryDetailEntries(
 }
 
 const LAYOUT_DETAIL_FIELDS: Record<ProjectLayout, LayoutDetailField[]> = {
-  theatre_v1: [
-    { key: 'venue', label: 'Venue' },
-    { key: 'rundates', label: 'Run Dates' },
-    { key: 'productiontype', label: 'Production Type' },
-  ],
   theatre_v2: [
     { key: 'venue', label: 'Venue' },
     { key: 'rundates', label: 'Run Dates' },
@@ -448,9 +428,13 @@ const LAYOUT_DETAIL_FIELDS: Record<ProjectLayout, LayoutDetailField[]> = {
     { key: 'duration', label: 'Duration' },
     { key: 'festivalstatus', label: 'Festival Status' },
   ],
+  scoring_v1: [
+    { key: 'duration', label: 'Duration' },
+    { key: 'festivalstatus', label: 'Festival Status' },
+  ],
   general_v1: [],
-  codingv1: [],
-  codingv2: [],
+  coding_v2: [],
+  composition_v1: [],
 };
 
 export function resolveLayoutDetailEntries(

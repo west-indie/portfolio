@@ -4,12 +4,13 @@ import Layout from './components/Layout';
 import PageTransition from './components/PageTransition';
 import Home from './pages/Home';
 import Work from './pages/Work';
+import Music from './pages/Music';
 import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import type { Collaborator, LinkStackItem, MediaItem, MediaItemType } from './types/project';
+import type { Collaborator, CompositionCredit, CompositionDetails, LinkStackItem, MediaItem, MediaItemType } from './types/project';
 import type { WorkbenchPreviewDraft } from './types/workbenchPreview';
-import { normalizeProjectLayout } from './lib/projectLayout';
+import { resolveProjectLayout } from './lib/projectLayout';
 import { normalizeDisciplines } from './lib/disciplines';
 
 const HIGHLIGHT_ACTIVE_ATTR = 'data-mwb-highlight';
@@ -104,6 +105,35 @@ function normalizeCollaborators(value: unknown): Collaborator[] {
       return role ? { name, role } : { name };
     })
     .filter((item): item is Collaborator => Boolean(item));
+}
+
+function normalizeComposition(value: unknown): CompositionDetails {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const source = value as Record<string, unknown>;
+  const selectedOrder = Number.parseInt(normalizeString(source.selectedOrder).trim(), 10);
+  const credits = Array.isArray(source.credits)
+    ? source.credits.map((item) => {
+      if (!item || typeof item !== 'object' || Array.isArray(item)) return null;
+      const credit = item as Record<string, unknown>;
+      const label = normalizeString(credit.label).trim();
+      const creditValue = normalizeString(credit.value).trim();
+      return label && creditValue ? { label, value: creditValue } : null;
+    }).filter((item): item is CompositionCredit => Boolean(item))
+    : [];
+  return {
+    length: normalizeString(source.length).trim(),
+    about: normalizeString(source.about).trim(),
+    arrangementNotes: normalizeString(source.arrangementNotes).trim(),
+    featuredExcerpt: normalizeString(source.featuredExcerpt).trim(),
+    fullAudio: normalizeString(source.fullAudio).trim(),
+    selected: source.selected === true,
+    ...(Number.isFinite(selectedOrder) && selectedOrder > 0 ? { selectedOrder } : {}),
+    imageCredit: normalizeString(source.imageCredit).trim(),
+    imageSubject: normalizeString(source.imageSubject).trim(),
+    imageNote: normalizeString(source.imageNote).trim(),
+    instrumentation: normalizeStringArray(source.instrumentation),
+    credits,
+  };
 }
 
 function normalizeMediaType(value: unknown): MediaItemType {
@@ -225,7 +255,7 @@ function normalizePreviewDraft(value: unknown): WorkbenchPreviewDraft | null {
     subtitle: normalizeString(draft.subtitle),
     year: normalizeString(draft.year),
     month: normalizeMonth(draft.month) || '01',
-    layout: normalizeProjectLayout(draft.layout),
+    layout: resolveProjectLayout(draft.layout),
     category: normalizeString(draft.category).trim(),
     categoryMeta: normalizeStringMap(draft.categoryMeta),
     role: normalizeString(draft.role),
@@ -239,6 +269,7 @@ function normalizePreviewDraft(value: unknown): WorkbenchPreviewDraft | null {
     omitTechStack: draft.omitTechStack === true,
     omitLinkStack: draft.omitLinkStack === true,
     omitWorkflow: draft.omitWorkflow === true,
+    composition: normalizeComposition(draft.composition),
     techStack: normalizeStringArray(draft.techStack),
     collaborators: normalizeCollaborators(draft.collaborators),
     cast: normalizeCollaborators(draft.cast),
@@ -300,6 +331,7 @@ function AppRoutes({ previewDraft }: { previewDraft: WorkbenchPreviewDraft | nul
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/work" element={<Work />} />
+          <Route path="/music" element={<Music />} />
           <Route path="/work/:slug" element={<ProjectDetail previewDraft={previewDraft} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

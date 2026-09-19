@@ -81,6 +81,11 @@ export const CATEGORY_DEFINITIONS = {
       { key: 'focus', label: 'Focus', required: false },
     ],
   },
+  composition: {
+    id: 'composition',
+    label: 'Composition',
+    detailFields: [],
+  },
 };
 
 export const CATEGORY_OPTIONS = Object.values(CATEGORY_DEFINITIONS);
@@ -94,7 +99,7 @@ export const DEFAULT_TAG_SUGGESTIONS = [
   'system design',
   'direction',
 ];
-const LOCATION_OPTIONAL_CATEGORY_IDS = new Set(['program', 'tooling', 'film', 'feature-film', 'short-film']);
+const LOCATION_OPTIONAL_CATEGORY_IDS = new Set(['program', 'tooling', 'film', 'feature-film', 'short-film', 'composition', 'music']);
 
 export const MEDIA_IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.svg']);
 export const MEDIA_VIDEO_EXTENSIONS = new Set(['.mp4', '.mov', '.m4v', '.webm', '.ogv']);
@@ -123,13 +128,31 @@ export const galleryItemSchema = z.object({
 });
 
 export const projectLayoutSchema = z.enum([
-  'theatre_v1',
-  'theatre_v2',
-  'film_v1',
   'general_v1',
-  'codingv1',
-  'codingv2',
+  'composition_v1',
+  'film_v1',
+  'theatre_v2',
+  'coding_v2',
+  'scoring_v1',
 ]);
+
+export const compositionSchema = z.object({
+  length: z.string().trim().optional().default(''),
+  about: z.string().trim().optional().default(''),
+  arrangementNotes: z.string().trim().optional().default(''),
+  featuredExcerpt: z.string().trim().optional().default(''),
+  fullAudio: z.string().trim().optional().default(''),
+  selected: z.boolean().optional().default(false),
+  selectedOrder: z.number().int().min(1).max(6).optional(),
+  imageCredit: z.string().trim().optional().default(''),
+  imageSubject: z.string().trim().optional().default(''),
+  imageNote: z.string().trim().optional().default(''),
+  instrumentation: z.array(z.string().trim().min(1)).optional().default([]),
+  credits: z.array(z.object({
+    label: z.string().trim().min(1),
+    value: z.string().trim().min(1),
+  })).optional().default([]),
+}).optional();
 
 export const mediaSchema = z.object({
   heroImage: z.string().trim().optional().default(''),
@@ -147,7 +170,7 @@ export const workFrontmatterSchema = z.object({
   year: z.string().trim().min(1),
   month: z.string().trim().min(1),
   category: z.string().trim().min(1).default(DEFAULT_CATEGORY),
-  layout: projectLayoutSchema.optional(),
+  layout: projectLayoutSchema,
   tags: z.array(z.string().trim().min(1)).default([]),
   categoryMeta: z.record(z.string(), z.string()).default({}),
   entryLines: z.array(z.string().trim().min(1)).default([]),
@@ -157,6 +180,7 @@ export const workFrontmatterSchema = z.object({
   omitTechStack: z.boolean().optional().default(false),
   omitLinkStack: z.boolean().optional().default(false),
   omitWorkflow: z.boolean().optional().default(false),
+  composition: compositionSchema,
   hidden: z.boolean().optional().default(false),
   hideFromWorkPage: z.boolean().optional().default(false),
   techStack: z.array(z.string().trim().min(1)).default([]),
@@ -172,7 +196,7 @@ export const createInputSchema = z.object({
   year: z.union([z.string(), z.number()]),
   month: z.union([z.string(), z.number()]).optional(),
   category: z.string().trim().optional().default(DEFAULT_CATEGORY),
-  layout: projectLayoutSchema.optional(),
+  layout: projectLayoutSchema.default('general_v1'),
   tags: z.array(z.string().trim().min(1)).default([]),
   categoryMeta: z.record(z.string(), z.string()).default({}),
   role: z.string().trim().min(1),
@@ -181,6 +205,7 @@ export const createInputSchema = z.object({
   omitTechStack: z.boolean().optional().default(false),
   omitLinkStack: z.boolean().optional().default(false),
   omitWorkflow: z.boolean().optional().default(false),
+  composition: compositionSchema,
   hidden: z.boolean().optional().default(false),
   hideFromWorkPage: z.boolean().optional().default(false),
   techStack: z.array(z.string().trim().min(1)).default([]),
@@ -209,7 +234,7 @@ export const createInputSchema = z.object({
     })).default([]),
     omitFeaturedFromGallery: z.boolean().optional().default(false),
   }),
-  description: z.string().min(1),
+  description: z.string().default(''),
 });
 
 export function slugify(input) {

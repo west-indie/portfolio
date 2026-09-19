@@ -1,4 +1,4 @@
-import type { Collaborator, LinkStackItem, MediaItem, ProjectLayout } from './project';
+import type { Collaborator, CompositionDetails, LinkStackItem, MediaItem, ProjectLayout } from './project';
 
 export interface WorkbenchPreviewDraft {
   slug: string;
@@ -6,7 +6,7 @@ export interface WorkbenchPreviewDraft {
   subtitle: string;
   year: string;
   month: string;
-  layout?: ProjectLayout;
+  layout: ProjectLayout;
   category: string;
   categoryMeta: Record<string, string>;
   role: string;
@@ -20,6 +20,7 @@ export interface WorkbenchPreviewDraft {
   omitTechStack: boolean;
   omitLinkStack: boolean;
   omitWorkflow: boolean;
+  composition: CompositionDetails;
   techStack: string[];
   collaborators: Collaborator[];
   cast: Collaborator[];

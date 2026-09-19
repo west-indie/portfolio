@@ -5,6 +5,7 @@ subtitle: Short film stitched with real-time shader overlays reacting to on-set 
 year: '2022'
 month: '01'
 category: general
+layout: general_v1
 tags:
   - TouchDesigner
   - GLSL

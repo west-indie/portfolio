@@ -5,6 +5,7 @@ subtitle: 'A modular cueing tool that bridges lighting, spatial audio, and live 
 year: '2024'
 month: '01'
 category: tooling
+layout: coding_v2
 tags:
   - TypeScript
   - React

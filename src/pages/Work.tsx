@@ -10,10 +10,7 @@ const DISCIPLINE_CHIP_PREFIX = 'discipline:';
 const PROJECT_GROUP_CHIP_PREFIX = 'group:';
 
 function resolveProjectGroupToken(layout: string) {
-  if (layout === 'codingv1' || layout === 'codingv2') return 'codingv1';
-  if (layout === 'film_v1') return 'film_v1';
-  if (layout === 'theatre_v1' || layout === 'theatre_v2') return 'theatre_v2';
-  return '';
+  return projectGroupDefinitions.some((item) => item.token === layout) ? layout : '';
 }
 
 function normalizeChipId(value: string) {
@@ -69,7 +66,7 @@ export default function Work() {
     const seen = new Set<string>();
 
     projects.forEach((project) => {
-      const layout = resolveProjectLayout(project.layout, project.category);
+      const layout = resolveProjectLayout(project.layout);
       const group = resolveProjectGroupToken(layout);
       if (!group || hiddenProjectGroupTokenSet.has(group) || seen.has(group)) return;
       seen.add(group);
@@ -142,7 +139,7 @@ export default function Work() {
       const groupToken = filter.slice(PROJECT_GROUP_CHIP_PREFIX.length).trim();
       if (!groupToken) return projects;
       return projects.filter((project) => {
-        const layout = resolveProjectLayout(project.layout, project.category);
+        const layout = resolveProjectLayout(project.layout);
         return resolveProjectGroupToken(layout) === groupToken;
       });
     }

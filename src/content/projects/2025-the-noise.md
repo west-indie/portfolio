@@ -5,6 +5,7 @@ subtitle: Score and soundtrack to match the ethereal nature of a short film that
 year: '2025'
 month: 08
 category: short-film
+layout: scoring_v1
 categoryMeta: {}
 entryLines: []
 role: Composer and Lead Sound Design
@@ -34,6 +35,7 @@ media:
     - type: image
       src: /images/projects/2025-the-noise/the-noise-04.png
   heroImage: /images/projects/2025-the-noise/the-noise-01.png
+  heroFit: width
   omitFeaturedFromGallery: false
 shortDescription: Score and soundtrack to match the ethereal nature of a short film that deals with mental health.
 client: Independent

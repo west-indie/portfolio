@@ -2,8 +2,7 @@
 export function codingV2Body(markdown: string, omitWorkflow: boolean): string {
   if (!omitWorkflow) return markdown;
   const lines = String(markdown || '').split(/\r?\n/);
-  const visible: string[] = [];
-  let inWorkflow = false;
+  const sections: string[][] = [[]];
   let fence = '';
   for (const line of lines) {
     const fenceMarker = line.match(/^\s*(`{3,}|~{3,})/);
@@ -11,12 +10,17 @@ export function codingV2Body(markdown: string, omitWorkflow: boolean): string {
       if (!fence) fence = fenceMarker[1][0];
       else if (fence === fenceMarker[1][0]) fence = '';
     }
-    if (!fence && /^##\s+Workflow\s*$/i.test(line.trim())) {
-      inWorkflow = true;
-      continue;
-    }
-    if (inWorkflow && !fence && /^##\s+\S/.test(line)) inWorkflow = false;
-    if (!inWorkflow) visible.push(line);
+    if (!fence && /^##\s+\S/.test(line)) sections.push([line]);
+    else sections[sections.length - 1].push(line);
   }
-  return visible.join('\n').trim();
+  return sections
+    .filter((section) => {
+      const content = section.join('\n');
+      const heading = String(section[0] || '').trim();
+      return !content.includes('codingv2-workflow') && !/^##\s+Workflow\s*$/i.test(heading);
+    })
+    .map((section) => section.join('\n').trim())
+    .filter(Boolean)
+    .join('\n\n')
+    .trim();
 }

@@ -5,6 +5,7 @@ subtitle: A collection of original one act plays and monologues written and adap
 year: '2024'
 month: '11'
 category: performance
+layout: theatre_v2
 tags:
   - ETC Eos
   - DMX

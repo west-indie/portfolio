@@ -1,12 +1,12 @@
 import { type ComponentType, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { marked } from 'marked';
-import TheatreV1Layout from '../components/project-layouts/TheatreV1Layout';
 import TheatreV2Layout from '../components/project-layouts/TheatreV2Layout';
 import FilmV1Layout from '../components/project-layouts/FilmV1Layout';
 import GeneralV1Layout from '../components/project-layouts/GeneralV1Layout';
-import CodingV1Layout from '../components/project-layouts/CodingV1Layout';
 import CodingV2Layout from '../components/project-layouts/CodingV2Layout';
+import CompositionV1Layout from '../components/project-layouts/CompositionV1Layout';
+import ScoringV1Layout from '../components/project-layouts/ScoringV1Layout';
 import type { ProjectLayoutProps } from '../components/project-layouts/types';
 import { getProjectBySlug, getWorkProjects } from '../content/projects';
 import { normalizeDisciplines } from '../lib/disciplines';
@@ -16,12 +16,12 @@ import type { LinkStackItem, Project, ProjectLayout } from '../types/project';
 import type { WorkbenchPreviewDraft } from '../types/workbenchPreview';
 
 const PROJECT_LAYOUT_COMPONENTS: Record<ProjectLayout, ComponentType<ProjectLayoutProps>> = {
-  theatre_v1: TheatreV1Layout,
   theatre_v2: TheatreV2Layout,
   film_v1: FilmV1Layout,
   general_v1: GeneralV1Layout,
-  codingv1: CodingV1Layout,
-  codingv2: CodingV2Layout,
+  coding_v2: CodingV2Layout,
+  composition_v1: CompositionV1Layout,
+  scoring_v1: ScoringV1Layout,
 };
 
 function normalizeLinkStack(value: unknown): LinkStackItem[] {
@@ -128,6 +128,7 @@ function buildProjectFromPreviewDraft(draft: WorkbenchPreviewDraft, base?: Proje
     omitTechStack: draft.omitTechStack,
     omitLinkStack: draft.omitLinkStack,
     omitWorkflow: draft.omitWorkflow,
+    composition: draft.composition,
     techStack: draft.techStack,
     collaborators: draft.collaborators,
     cast: draft.cast,
@@ -141,7 +142,7 @@ function buildProjectFromPreviewDraft(draft: WorkbenchPreviewDraft, base?: Proje
     },
     body: marked.parse(codingV2Body(
       draft.description || '',
-      resolveProjectLayout(draft.layout, draft.category) === 'codingv2' && draft.omitWorkflow,
+      resolveProjectLayout(draft.layout) === 'coding_v2' && draft.omitWorkflow,
     )).toString(),
   };
 }
@@ -232,8 +233,8 @@ export default function ProjectDetail({ previewDraft }: ProjectDetailProps) {
   const stackLinks = useMemo(() => resolveStackLinks(project?.links), [project?.links]);
 
   const projectPageLayout = useMemo<ProjectLayout>(
-    () => resolveProjectLayout(project?.layout, project?.category),
-    [project?.layout, project?.category],
+    () => resolveProjectLayout(project?.layout),
+    [project?.layout],
   );
 
   if (!project || project.hidden === true) {

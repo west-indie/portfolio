@@ -4,8 +4,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { validateWorkEntries } from '../lib/validate.mjs';
 
-const DUP_A = `---\nslug: \"dup\"\ntitle: \"A\"\nsubtitle: \"sub\"\nyear: \"2026\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack: []\ncollaborators: []\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/a.jpg\"\n  gallery: []\n---\nBody\n`;
-const DUP_B = `---\nslug: \"dup\"\ntitle: \"B\"\nsubtitle: \"sub\"\nyear: \"2026\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack: []\ncollaborators: []\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/b.jpg\"\n  gallery: []\n---\nBody\n`;
+const DUP_A = `---\nslug: \"dup\"\ntitle: \"A\"\nsubtitle: \"sub\"\nyear: \"2026\"\nlayout: \"general_v1\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack: []\ncollaborators: []\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/a.jpg\"\n  gallery: []\n---\nBody\n`;
+const DUP_B = `---\nslug: \"dup\"\ntitle: \"B\"\nsubtitle: \"sub\"\nyear: \"2026\"\nlayout: \"general_v1\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack: []\ncollaborators: []\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/b.jpg\"\n  gallery: []\n---\nBody\n`;
 
 export default async function run() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'work-validate-test-'));

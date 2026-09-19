@@ -13,5 +13,6 @@ describe('App', () => {
 
     expect(screen.getByRole('link', { name: /Home/i })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: /Work/i }).length).toBeGreaterThan(0);
+    expect(screen.getByRole('navigation', { name: /Primary navigation/i }).querySelector('a[href="/music"]')).toBeInTheDocument();
   });
 });

@@ -4,6 +4,7 @@ import type { Project } from '../types/project';
 import { formatCategoryLabel, formatDisciplineLabel } from '../config';
 import { resolveAssetPath } from '../lib/assetPath';
 import { MAX_PROJECT_CARD_DISCIPLINES } from '../lib/disciplines';
+import CompositionCard from './CompositionCard';
 
 interface Props {
   project: Project;
@@ -11,11 +12,16 @@ interface Props {
 }
 
 export default function ProjectCard({ project, showTags = true }: Props) {
+  if (project.layout === 'composition_v1') {
+    return <CompositionCard project={project} />;
+  }
   const { slug, title, subtitle, category, role, year, disciplines, media, entryLines, tags } = project;
   const image = media?.heroImage;
   const imageSrc = resolveAssetPath(image);
   const leadLine = Array.isArray(entryLines) ? entryLines.find((line) => String(line || '').trim()) : '';
-  const categoryLabel = formatCategoryLabel(category);
+  const categoryLabel = (category === 'program' || category === 'tooling') && project.categoryMeta?.type
+    ? project.categoryMeta.type
+    : formatCategoryLabel(category);
 
   return (
     <motion.div whileHover={{ y: -6 }} className="h-full">

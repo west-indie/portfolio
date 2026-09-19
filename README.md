@@ -26,6 +26,12 @@ Key commands:
 - `work validate` defaults to `--changed`; use `--all` for full catalog checks.
 - `work deploy` runs preflight (`validate`, `lint`, `test`, `build`), then commits portfolio source/content changes and pushes the current branch.
 
+### Composition entries
+
+Use `layout: composition_v1` for projects that should appear in both **Work** and **Music**. The `composition` frontmatter block stores length, Featured Hero Excerpt audio, full audio, selected status/order, image context, instrumentation, and credits. `media.heroImage` is the associated image, and `moreWork` supplies related-project cross-links. Local audio selected in MagicMan is copied to `public/audio/projects/<slug>/` when the entry is saved.
+
+Coding v2 projects can use custom main, process, and final section titles. MagicMan keeps workflow steps numbered for editing; the published site presents the saved steps as connected cards with arrows.
+
 ---
 
 ## 0. Super-short student cheatsheet (Web Editor version)
@@ -223,7 +229,7 @@ To show up nicely on cards and the project page, you should always include:
 * `featured: true`: shows the project on the **Home** page “Featured Work” strip.
 * `hideFromWorkPage: true`: keeps the direct project URL active while removing the entry from Work and related-work lists.
 * `hidden: true`: removes the entry from public project routes as well as listing pages.
-* `layout`: selects an explicit project layout. Program and tooling entries can use `codingv1` or the workflow-focused `codingv2` layout.
+* `layout`: selects the page presentation independently from category. Use `general_v1` (Default), `composition_v1` (Composition), `film_v1` (Film), `theatre_v2` (Performance), `coding_v2` (Coding), or `scoring_v1` (Scoring).
 * `omitWorkflow: true`: hides the `## Workflow` section on coding v2 pages while keeping the steps in the Markdown for later editing.
 * Coding v2 descriptions use `## Built around the task`, `## Workflow`, and `## Design and build notes` sections. MagicMan numbers steps for editing; the site connects them with arrows.
 * `techStack`: relevant tools for code/program projects.

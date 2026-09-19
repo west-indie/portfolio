@@ -1,6 +1,11 @@
 {
   "categories": [
     {
+      "id": "composition",
+      "label": "Composition",
+      "detailFields": []
+    },
+    {
       "id": "feature-film",
       "label": "Feature Film",
       "detailFields": [

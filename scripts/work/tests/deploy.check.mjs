@@ -12,7 +12,7 @@ function git(args, cwd) {
   }
 }
 
-const ENTRY = `---\nslug: \"signal-weaver\"\ntitle: \"Signal Weaver\"\nsubtitle: \"sub\"\nyear: \"2026\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack:\n  - Ink\ncollaborators:\n  - name: \"A\"\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/signal-weaver-hero.jpg\"\n  gallery: []\n---\nBody\n`;
+const ENTRY = `---\nslug: \"signal-weaver\"\ntitle: \"Signal Weaver\"\nsubtitle: \"sub\"\nyear: \"2026\"\nlayout: \"general_v1\"\nrole: \"Role\"\nlocation: \"Place\"\ndisciplines:\n  - theatre\ntechStack:\n  - Ink\ncollaborators:\n  - name: \"A\"\nlinks: {}\nmedia:\n  heroImage: \"/images/projects/signal-weaver-hero.jpg\"\n  gallery: []\n---\nBody\n`;
 
 export default async function run() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'work-deploy-test-'));
@@ -32,7 +32,7 @@ export default async function run() {
 
   await fs.writeFile(path.join(root, 'src', 'content', 'projects', 'signal-weaver.md'), ENTRY.replace('Body', 'Body updated'), 'utf8');
   await fs.writeFile(path.join(root, 'src', 'index.css'), 'body { color: white; }\n', 'utf8');
-  await fs.writeFile(path.join(root, 'src', 'lib', 'codingV2.ts'), 'export const layout = "codingv2";\n', 'utf8');
+  await fs.writeFile(path.join(root, 'src', 'lib', 'codingV2.ts'), 'export const layout = "coding_v2";\n', 'utf8');
 
   const result = await runDeployWorkflow({
     cwd: root,

@@ -79,7 +79,7 @@ export default async function run() {
       subtitle: 'A coding v2 example.',
       year: '2026',
       category: 'program',
-      layout: 'codingv2',
+      layout: 'coding_v2',
       role: 'Developer',
       disciplines: ['code-programs'],
       omitWorkflow: true,
@@ -88,7 +88,50 @@ export default async function run() {
     },
   });
   const codingMarkdown = await fs.readFile(path.join(root, coding.relativeFilePath), 'utf8');
-  assert.match(codingMarkdown, /layout:\s+codingv2/);
+  assert.match(codingMarkdown, /layout:\s+coding_v2/);
   assert.match(codingMarkdown, /omitWorkflow:\s+true/);
   assert.match(codingMarkdown, /1\. Paste[\s\S]*2\. Export/);
+  assert.doesNotMatch(codingMarkdown, /^composition:/m);
+
+  const excerptSrc = path.join(root, 'excerpt.mp3');
+  const fullSrc = path.join(root, 'full.wav');
+  await fs.writeFile(excerptSrc, 'excerpt', 'utf8');
+  await fs.writeFile(fullSrc, 'full', 'utf8');
+  const composition = await createWorkEntry({
+    root,
+    input: {
+      slug: 'night-study',
+      title: 'Night Study',
+      subtitle: 'A short electronic composition.',
+      year: '2026',
+      category: 'composition',
+      layout: 'composition_v1',
+      role: 'Composer',
+      disciplines: ['comp'],
+      media: { heroImage: heroSrc, gallery: [] },
+      composition: {
+        length: '3:42',
+        about: 'A study in suspended harmony.',
+        arrangementNotes: 'Layered synthesizers and processed percussion.',
+        featuredExcerpt: excerptSrc,
+        fullAudio: fullSrc,
+        selected: true,
+        selectedOrder: 1,
+        imageCredit: 'Leo Nunez',
+        imageSubject: 'Night architecture.',
+        imageNote: 'The lighting mirrors the harmonic pacing.',
+        instrumentation: ['Synthesizer', 'Percussion'],
+        credits: [{ label: 'Composer', value: 'Leo Nunez' }],
+      },
+      description: '',
+    },
+  });
+  const compositionMarkdown = await fs.readFile(path.join(root, composition.relativeFilePath), 'utf8');
+  assert.match(compositionMarkdown, /category:\s+composition/);
+  assert.match(compositionMarkdown, /layout:\s+composition_v1/);
+  assert.match(compositionMarkdown, /featuredExcerpt:\s+\/audio\/projects\/night-study\/night-study-excerpt\.mp3/);
+  assert.match(compositionMarkdown, /fullAudio:\s+\/audio\/projects\/night-study\/night-study-full\.wav/);
+  assert.match(compositionMarkdown, /selectedOrder:\s+1/);
+  await fs.access(path.join(root, 'public', 'audio', 'projects', 'night-study', 'night-study-excerpt.mp3'));
+  await fs.access(path.join(root, 'public', 'audio', 'projects', 'night-study', 'night-study-full.wav'));
 }

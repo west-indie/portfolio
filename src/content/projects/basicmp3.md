@@ -5,7 +5,7 @@ subtitle: Video-to-audio downloader with six export formats and queued processin
 year: '2026'
 month: 09
 category: program
-layout: codingv2
+layout: coding_v2
 categoryMeta:
   type: Desktop application
   platform: Windows
@@ -42,13 +42,14 @@ moreWork:
   - 2026-basic-convert
   - 2026-sunset-engine
 ---
-## Built around the task
+## From link to audio
 
-BasicMP3 keeps the path from a supported video link to a finished audio file short and legible. The interface centers the source preview, export settings, and queue instead of exposing technical setup that does not help with the download.
+BasicMP3 turns a supported video link into a configured audio export through one direct path. Source information stays visible from preview through processing so the user can confirm the media before adding it to the queue.
 
-- **Preview before exporting.** Verify the source and metadata before the download enters the queue.
-- **Six export formats.** Choose the format and quality that fit the destination instead of converting twice.
-- **Queued processing.** Prepare several exports and let the application process them in order.
+- **Source preview.** Verify the source and its metadata before configuring the export.
+- **Multiple audio formats.** Choose from six output formats without adding another conversion step.
+- **Export configuration.** Keep format, quality, and destination controls together for quick setup.
+- **Queue-based processing.** Prepare several exports and let the application process them in order.
 
 ## Workflow
 
@@ -62,6 +63,6 @@ BasicMP3 keeps the path from a supported video link to a finished audio file sho
   <div class="codingv2-workflow-step" role="listitem"><strong>Queue</strong><p>Track each export from one place.</p></div>
 </div>
 
-## Design and build notes
+## Designing for repeat exports
 
-The application is designed as a focused desktop utility rather than a full media suite. Clear status feedback and queued processing make repeated exports easier to track, while the compact controls keep the most common actions close together.
+The interface is organized for repeated export tasks. Common controls stay close together, source metadata remains visible before conversion, and users can prepare several exports without rebuilding the same setup. The queue tracks each job in one place and reduces the need to supervise every conversion individually.
